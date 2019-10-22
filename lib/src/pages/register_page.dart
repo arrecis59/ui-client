@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ui_client/src/providers/autentication_provider.dart';
+import 'package:ui_client/src/utils/utils.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key}) : super(key: key);
@@ -10,6 +12,10 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
 
   bool _isHidden = false;
+  final AutenticationProvider authProvider = AutenticationProvider();
+  
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ]
       ),
       child: TextFormField( 
+        controller: emailController,
         autofocus: false,
         style: TextStyle( 
           color: Colors.grey
@@ -121,6 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ]
       ),
       child: TextFormField( 
+        controller: passwordController,
         autofocus: false,
         obscureText: _isHidden ? false: true,
         style: TextStyle(
@@ -161,7 +169,14 @@ class _RegisterPageState extends State<RegisterPage> {
           color: Colors.blue.shade300,
           textColor: Colors.white,
           child: Text('Crear'.toUpperCase()),
-          onPressed: (){
+          onPressed: () async{
+            Map info = await authProvider.nuevoUsuario(emailController.text, passwordController.text);
+
+            if(info['ok']){
+              mostrarAlerta(context, 'Cuenta creada correctamente!', 'Bienvenido');
+            }else{
+              mostrarAlerta(context, info['message'], 'error');
+            }
           },
         ),
       ),
@@ -191,7 +206,8 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Text( 
               'ingresar'.toUpperCase(),
               style: TextStyle( 
-                color: Colors.blue.shade200
+                color: Colors.blue.shade200,
+                fontWeight: FontWeight.w500
               ),
             ),
             onTap: (){

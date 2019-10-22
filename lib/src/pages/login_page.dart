@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ui_client/src/providers/autentication_provider.dart';
+import 'package:ui_client/src/utils/utils.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -10,6 +12,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 
   bool _isHidden = false;
+  final AutenticationProvider authProvider = AutenticationProvider();
+ 
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +56,8 @@ class _LoginPageState extends State<LoginPage> {
           )
         ]
       ),
-      child: TextFormField( 
+      child: TextFormField(
+        controller: emailController, 
         autofocus: false,
         style: TextStyle( 
           color: Colors.grey
@@ -92,6 +99,7 @@ class _LoginPageState extends State<LoginPage> {
         ]
       ),
       child: TextFormField( 
+        controller: passwordController,
         autofocus: false,
         obscureText: _isHidden ? false: true,
         style: TextStyle(
@@ -132,7 +140,15 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.blue.shade300,
           textColor: Colors.white,
           child: Text('Ingresar'.toUpperCase()),
-          onPressed: (){
+          onPressed: () async{
+            Map info = await authProvider.Ingresar(emailController.text , passwordController.text);
+
+            if(info['ok']){
+              Navigator.pushReplacementNamed(context, 'home');
+            }else{
+              mostrarAlerta(context, info['message'], 'error');
+            }
+
           },
         ),
       ),
