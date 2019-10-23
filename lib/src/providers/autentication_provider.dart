@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class AutenticationProvider {
   final String _apiKey = 'AIzaSyAHWcPxXXNKIexUep9XDnPdHrXAb2H2t20';
 
-  Future<Map<String, dynamic>> Ingresar(String email, String password) async {
+  Future<Map<String, dynamic>> ingresar(String email, String password) async {
     final authData = {
       "email": email,
       "password": password,
