@@ -173,7 +173,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Map info = await authProvider.nuevoUsuario(emailController.text, passwordController.text);
 
             if(info['ok']){
-              mostrarAlerta(context, 'Cuenta creada correctamente!', 'Bienvenido');
+              Navigator.pushReplacementNamed(context, '/');
             }else{
               mostrarAlerta(context, info['message'], 'error');
             }
