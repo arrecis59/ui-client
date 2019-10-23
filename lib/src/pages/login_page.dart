@@ -10,58 +10,47 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   bool _isHidden = false;
   final AutenticationProvider authProvider = AutenticationProvider();
- 
+
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold( 
+    return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
-          child: Container( 
-            color: Colors.white,
-            width: MediaQuery.of(context).size.width,
-            child:  Column(
-              children: <Widget>[
-                _encabezado(),
-                _emailInput(),
-                _passwordInput(),
-                _ingresarButton(),
-                _crearCuenta()
-              ],
-            ),
-          )
-        ),
+            child: Container(
+          color: Colors.white,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: <Widget>[
+              _encabezado(),
+              _emailInput(),
+              _passwordInput(),
+              _ingresarButton(),
+              _crearCuenta()
+            ],
+          ),
+        )),
       ),
     );
   }
 
-
-    Widget _emailInput(){
+  Widget _emailInput() {
     return Container(
       margin: EdgeInsets.only(bottom: 18.0),
       width: MediaQuery.of(context).size.width / 1.10,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow( 
-            blurRadius: 10.0,
-            color: Colors.black26
-          )
-        ]
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(50.0)),
+          color: Colors.white,
+          boxShadow: [BoxShadow(blurRadius: 10.0, color: Colors.black26)]),
       child: TextFormField(
-        controller: emailController, 
+        controller: emailController,
         autofocus: false,
-        style: TextStyle( 
-          color: Colors.grey
-        ),
+        style: TextStyle(color: Colors.grey),
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           hintText: 'Ingrese correo electrónico',
@@ -69,10 +58,9 @@ class _LoginPageState extends State<LoginPage> {
           contentPadding: EdgeInsets.all(10.0),
           prefixIcon: Icon(Icons.email),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-          enabledBorder: OutlineInputBorder( 
-            borderSide: BorderSide(color: Colors.transparent),
-            borderRadius: BorderRadius.circular(50.0)
-          ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent),
+              borderRadius: BorderRadius.circular(50.0)),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue.shade200, width: 2.0),
             borderRadius: BorderRadius.circular(50.0),
@@ -82,43 +70,33 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
-
-  Widget _passwordInput(){
+  Widget _passwordInput() {
     return Container(
       margin: EdgeInsets.only(bottom: 18.0),
       width: MediaQuery.of(context).size.width / 1.10,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow( 
-            blurRadius: 10.0,
-            color: Colors.black26
-          )
-        ]
-      ),
-      child: TextFormField( 
+          borderRadius: BorderRadius.all(Radius.circular(50.0)),
+          color: Colors.white,
+          boxShadow: [BoxShadow(blurRadius: 10.0, color: Colors.black26)]),
+      child: TextFormField(
         controller: passwordController,
         autofocus: false,
-        obscureText: _isHidden ? false: true,
-        style: TextStyle(
-          color: Colors.grey
-        ),
+        obscureText: _isHidden ? false : true,
+        style: TextStyle(color: Colors.grey),
         decoration: InputDecoration(
           hintText: 'Ingrese contraseña',
           hintStyle: TextStyle(color: Colors.grey),
           contentPadding: EdgeInsets.all(10.0),
           prefixIcon: Icon(Icons.lock),
-          suffixIcon: IconButton( 
-            icon: _isHidden ? Icon(Icons.visibility): Icon(Icons.visibility_off),
+          suffixIcon: IconButton(
+            icon:
+                _isHidden ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
             onPressed: _toggleVisibility,
           ),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-          enabledBorder: OutlineInputBorder( 
-            borderSide: BorderSide(color: Colors.transparent),
-            borderRadius: BorderRadius.circular(50.0)
-          ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent),
+              borderRadius: BorderRadius.circular(50.0)),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue.shade200, width: 2.0),
             borderRadius: BorderRadius.circular(50.0),
@@ -128,102 +106,124 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
-    Widget _ingresarButton(){
-    return  Container( 
+  Widget _ingresarButton() {
+    return Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       child: ButtonTheme(
         minWidth: MediaQuery.of(context).size.width / 1.10,
         height: 48.0,
         child: RaisedButton(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
           color: Colors.blue.shade300,
           textColor: Colors.white,
           child: Text('Ingresar'.toUpperCase()),
-          onPressed: () async{
-            Map info = await authProvider.Ingresar(emailController.text , passwordController.text);
+          onPressed: () async {
+            Map info = await authProvider.Ingresar(
+                emailController.text, passwordController.text);
 
-            if(info['ok']){
+            if (info['ok']) {
               Navigator.pushReplacementNamed(context, 'home');
-            }else{
+            } else {
               mostrarAlerta(context, info['message'], 'error');
             }
-
           },
         ),
       ),
     );
   }
 
+  // Widget _registrarseButton(){
+  //   return  Container(
+  //     margin: EdgeInsets.only(top: 24.0),
+  //     child: ButtonTheme(
+  //       minWidth: MediaQuery.of(context).size.width / 1.10,
+  //       height: 48.0,
+  //       child: RaisedButton(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(50.0),
+  //           side: BorderSide(color: Colors.blue.shade200, width: 1.5)
+  //         ),
+  //         color: Colors.white,
+  //         textColor: Colors.blue.shade200,
+  //         child: Text('Crear cuenta'.toUpperCase()),
+  //         onPressed: (){
+  //            Navigator.pushReplacementNamed(context, 'register');
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 
-    Widget _registrarseButton(){
-    return  Container( 
+  Widget _registrarseButton() {
+    return Container(
       margin: EdgeInsets.only(top: 24.0),
       child: ButtonTheme(
         minWidth: MediaQuery.of(context).size.width / 1.10,
         height: 48.0,
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50.0), 
-            side: BorderSide(color: Colors.blue.shade200, width: 1.5)
-          ),
-          color: Colors.white,
-          textColor: Colors.blue.shade200,
-          child: Text('Crear cuenta'.toUpperCase()),
-          onPressed: (){
-             Navigator.pushReplacementNamed(context, 'register');
+        child: OutlineButton(
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, 'register');
           },
+          child: Text(
+            "crear cuenta".toUpperCase(),
+            style: TextStyle(
+                color: Colors.blue.shade200,
+                fontSize: 13.0,
+                fontWeight: FontWeight.w600),
+          ),
+          borderSide: BorderSide(color: Colors.blue.shade100, width: 1.1),
+          shape: StadiumBorder(),
         ),
+        buttonColor: Colors.white,
       ),
     );
   }
 
-    Widget _crearCuenta(){
-    return Container( 
-      margin: EdgeInsets.symmetric(vertical: 18.0),
-      child: Column(
-        children: <Widget>[
-          Text('o'.toUpperCase(), style: TextStyle(color: Colors.grey),),
-          _registrarseButton()
-        ],
-      )
-    );
-  }
-
-
-  Widget _encabezado(){
-    return Container( 
-      padding: EdgeInsets.only(top: 20.0,bottom: 40.0),
-      child: Column(
-        children: <Widget>[
-          Hero(
-            tag: 'Hero',
-            child: CircleAvatar( 
-              backgroundColor: Colors.transparent,
-              radius: 48.0,
-              child: Image.asset('assets/logo.png'),
-            )
-          ),
-          SizedBox(height: 30,),
-          Text( 
-            'Bienvenido'.toUpperCase(),
-            style: TextStyle(
-              color: Colors.grey.shade700,
-              fontSize: 18.0,
-              fontFamily: 'arial',
-              fontWeight: FontWeight.bold
+  Widget _crearCuenta() {
+    return Container(
+        margin: EdgeInsets.symmetric(vertical: 18.0),
+        child: Column(
+          children: <Widget>[
+            Text(
+              'o'.toUpperCase(),
+              style: TextStyle(color: Colors.grey),
             ),
-          ),
-
-        ],
-      )
-    );
+            _registrarseButton()
+          ],
+        ));
   }
 
-  void _toggleVisibility(){
+  Widget _encabezado() {
+    return Container(
+        padding: EdgeInsets.only(top: 20.0, bottom: 40.0),
+        child: Column(
+          children: <Widget>[
+            Hero(
+                tag: 'Hero',
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: 48.0,
+                  child: Image.asset('assets/logo.png'),
+                )),
+            SizedBox(
+              height: 30,
+            ),
+            Text(
+              'Bienvenido'.toUpperCase(),
+              style: TextStyle(
+                  color: Colors.grey.shade700,
+                  fontSize: 18.0,
+                  fontFamily: 'arial',
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ));
+  }
+
+  void _toggleVisibility() {
     setState(() {
-     _isHidden = !_isHidden;
+      _isHidden = !_isHidden;
     });
   }
-
 }
