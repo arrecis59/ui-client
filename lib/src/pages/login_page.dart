@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
           textColor: Colors.white,
           child: Text('Ingresar'.toUpperCase()),
           onPressed: () async {
-            Map info = await authProvider.Ingresar(
+            Map info = await authProvider.ingresar(
                 emailController.text, passwordController.text);
 
             if (info['ok']) {
