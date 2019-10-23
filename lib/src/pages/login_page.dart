@@ -196,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(
                   color: Colors.grey.shade700,
                   fontSize: 18.0,
-                  fontWeight: FontWeight.w600),
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ));
