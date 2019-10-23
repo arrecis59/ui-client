@@ -28,17 +28,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold( 
       backgroundColor: Colors.white,
-      body: Center( 
-        child: Container(
-          child: SingleChildScrollView(
-            child: Column( 
-              children: <Widget>[
-                cambiarPage()//Pagina a mostrar
-              ],
-            ),
-          ),
-        ),
-      ),
+      body: cambiarPage(),
       bottomNavigationBar: Container(
       height: 65.0,
       padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.5),
