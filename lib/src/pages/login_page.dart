@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(50.0)),
           color: Colors.white,
-          boxShadow: [BoxShadow(blurRadius: 10.0, color: Colors.black26)]),
+          boxShadow: [BoxShadow(blurRadius: 4.0, color: Colors.black26)]),
       child: TextFormField(
         controller: emailController,
         autofocus: false,
@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(50.0)),
           color: Colors.white,
-          boxShadow: [BoxShadow(blurRadius: 10.0, color: Colors.black26)]),
+          boxShadow: [BoxShadow(blurRadius: 4.0, color: Colors.black26)]),
       child: TextFormField(
         controller: passwordController,
         autofocus: false,
@@ -133,49 +133,31 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Widget _registrarseButton(){
-  //   return  Container(
-  //     margin: EdgeInsets.only(top: 24.0),
-  //     child: ButtonTheme(
-  //       minWidth: MediaQuery.of(context).size.width / 1.10,
-  //       height: 48.0,
-  //       child: RaisedButton(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(50.0),
-  //           side: BorderSide(color: Colors.blue.shade200, width: 1.5)
-  //         ),
-  //         color: Colors.white,
-  //         textColor: Colors.blue.shade200,
-  //         child: Text('Crear cuenta'.toUpperCase()),
-  //         onPressed: (){
-  //            Navigator.pushReplacementNamed(context, 'register');
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _registrarseButton() {
     return Container(
       margin: EdgeInsets.only(top: 24.0),
-      child: ButtonTheme(
+      child: ButtonTheme( 
         minWidth: MediaQuery.of(context).size.width / 1.10,
         height: 48.0,
-        child: OutlineButton(
-          onPressed: () {
+        child: FlatButton(
+          onPressed: (){
             Navigator.pushReplacementNamed(context, 'register');
           },
           child: Text(
-            "crear cuenta".toUpperCase(),
-            style: TextStyle(
-                color: Colors.blue.shade200,
-                fontSize: 13.0,
-                fontWeight: FontWeight.w600),
+            'Crear cuenta'.toUpperCase(),
+            style: TextStyle( 
+              color: Colors.blue.shade200,
+              fontWeight: FontWeight.w400
+            ),
           ),
-          borderSide: BorderSide(color: Colors.blue.shade100, width: 1.1),
-          shape: StadiumBorder(),
+          shape: RoundedRectangleBorder( 
+            borderRadius: BorderRadius.circular(50.0),
+            side: BorderSide(
+              color: Colors.blue.shade100,
+              width: 1
+            )
+          ),
         ),
-        buttonColor: Colors.white,
       ),
     );
   }
@@ -214,8 +196,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(
                   color: Colors.grey.shade700,
                   fontSize: 18.0,
-                  fontFamily: 'arial',
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.w600),
             ),
           ],
         ));
