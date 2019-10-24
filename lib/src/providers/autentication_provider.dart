@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:ui_client/src/preferecias_usuario/preferencias_usuario.dart';
 
 class AutenticationProvider {
+
   final String _apiKey = 'AIzaSyAHWcPxXXNKIexUep9XDnPdHrXAb2H2t20';
+  final _prefs = PreferenciasUsuario();
 
   Future<Map<String, dynamic>> ingresar(String email, String password) async {
     final authData = {
@@ -20,7 +23,9 @@ class AutenticationProvider {
     print(decodeResp);
 
     if (decodeResp.containsKey('idToken')) {
-      //guardar token en storage
+      
+      _prefs.email = decodeResp['email'];//guarda email para hacer peticiones a firebase
+
       return {"ok": true};
     } else {
       return {"ok": false, "message": decodeResp['error']['message']};
@@ -45,7 +50,7 @@ class AutenticationProvider {
     print(decodeResp);
 
     if (decodeResp.containsKey('idToken')) {
-      //guardar token en storage
+
       return {"ok": true};
     } else {
       return {"ok": false, "message": decodeResp['error']['message']};
