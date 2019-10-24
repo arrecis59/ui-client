@@ -11,6 +11,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isHidden = false;
+  bool _isLoading = false;
   final AutenticationProvider authProvider = AutenticationProvider();
 
   TextEditingController emailController = new TextEditingController();
@@ -21,10 +22,18 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
+        child: Stack(
+          children: <Widget>[_vista(), _crearLoading()],
+        ),
+      ),
+    );
+  }
+
+  Widget _vista() {
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
-            child: Container(
-          color: Colors.white,
-          width: MediaQuery.of(context).size.width,
           child: Column(
             children: <Widget>[
               _encabezado(),
@@ -34,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
               _crearCuenta()
             ],
           ),
-        )),
+        ),
       ),
     );
   }
@@ -118,16 +127,7 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.blue.shade300,
           textColor: Colors.white,
           child: Text('Ingresar'.toUpperCase()),
-          onPressed: () async {
-            Map info = await authProvider.ingresar(
-                emailController.text, passwordController.text);
-
-            if (info['ok']) {
-              Navigator.pushReplacementNamed(context, 'home');
-            } else {
-              mostrarAlerta(context, info['message'], 'error');
-            }
-          },
+          onPressed: !_isLoading ? _iniciarSesion: null,
         ),
       ),
     );
@@ -136,27 +136,21 @@ class _LoginPageState extends State<LoginPage> {
   Widget _registrarseButton() {
     return Container(
       margin: EdgeInsets.only(top: 24.0),
-      child: ButtonTheme( 
+      child: ButtonTheme(
         minWidth: MediaQuery.of(context).size.width / 1.10,
         height: 48.0,
         child: FlatButton(
-          onPressed: (){
+          onPressed: () {
             Navigator.pushReplacementNamed(context, 'register');
           },
           child: Text(
             'Crear cuenta'.toUpperCase(),
-            style: TextStyle( 
-              color: Colors.blue.shade200,
-              fontWeight: FontWeight.w400
-            ),
+            style: TextStyle(
+                color: Colors.blue.shade200, fontWeight: FontWeight.w400),
           ),
-          shape: RoundedRectangleBorder( 
-            borderRadius: BorderRadius.circular(50.0),
-            side: BorderSide(
-              color: Colors.blue.shade100,
-              width: 1
-            )
-          ),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50.0),
+              side: BorderSide(color: Colors.blue.shade100, width: 1)),
         ),
       ),
     );
@@ -202,9 +196,57 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
+  Widget _crearLoading() {
+    if (_isLoading) {
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[CircularProgressIndicator()],
+          )
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
   void _toggleVisibility() {
     setState(() {
       _isHidden = !_isHidden;
     });
   }
+
+  void _setLoading(bool status) {
+    setState(() {
+      _isLoading = status;
+    });
+  }
+
+  void _iniciarSesion() async {
+
+    if(emailController.text !='' && emailController.text !=''){
+
+      _setLoading(true);
+
+      Map info = await authProvider.ingresar(emailController.text, passwordController.text);
+
+      if (info['ok']) {
+        
+        _setLoading(false);
+        Navigator.pushReplacementNamed(context, 'home');
+      } else {
+        
+        _setLoading(false);
+        mostrarAlerta(context, info['message'], 'error');
+      }
+
+    }else{
+      mostrarAlerta(context,'Ingrese correo y contraseña', 'error');
+    }
+  }
+
+
 }
