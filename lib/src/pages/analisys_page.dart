@@ -19,7 +19,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink.shade200,
+        backgroundColor: Colors.green.shade300,
         actions: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -99,8 +99,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
         minWidth: MediaQuery.of(context).size.width / 2,
         height: 40.0,
         child: RaisedButton( 
-          // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
-          color: Colors.pink.shade200,
+          color:  Colors.green.shade300,
           textColor: Colors.white,
           child: Text( 
             'Iniciar análisis'
