@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter/material.dart';
+import 'package:ui_client/src/providers/analisis_provider.dart';
+import 'package:ui_client/src/utils/utils.dart';
 
 class AnalisysPage extends StatefulWidget {
   AnalisysPage({Key key}) : super(key: key);
@@ -15,6 +17,9 @@ class _AnalisysPageState extends State<AnalisysPage> {
   File foto;
   String status = '';
   bool _isLoading = false;
+  bool _isEnable = false; //boton analisis
+
+  AnalasisProvider analisiProvider = AnalasisProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -113,17 +118,34 @@ class _AnalisysPageState extends State<AnalisysPage> {
           child: Text( 
             'Iniciar análisis'
           ),
-          onPressed: (){
-           
-          },
+          onPressed: _isEnable ? _iniciarAnalisis : null,
         ),
       ),
     );
   }
 
-  _setStatus(String message) {
+  void _iniciarAnalisis() async{
+
+    if (foto != null) {
+      
+      _setButtonStatus(false);
+      _setLoading(true);
+
+      String resp = await analisiProvider.subirImagen(foto);
+
+      if (resp != null) {
+       _setLoading(false);
+       mostrarAlerta(context, 'Imagen cargada exitosamente!', 'Info');
+
+      }else{
+        _setLoading(false);
+      }
+    }
+  }
+
+  _setButtonStatus(bool status){
     setState(() {
-      status = message;
+      _isEnable = status;
     });
   }
 
@@ -146,17 +168,21 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   _procesarImagen(ImageSource origin) async {
     foto = await ImagePicker.pickImage(source: origin);
-    setState(() {});
+    
+    if(foto != null){
+      _setButtonStatus(true);
+    }else{
+      setState(() {});
+    }
+
   }
 
   _seleccionarImagen() async {
     _procesarImagen(ImageSource.gallery);
-    _setStatus('');
   }
 
   _tomarImagen() async {
     _procesarImagen(ImageSource.camera);
-    _setStatus('');
   }
 
 
