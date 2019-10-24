@@ -14,6 +14,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   File foto;
   String status = '';
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +33,22 @@ class _AnalisysPageState extends State<AnalisysPage> {
           )
         ],
       ),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-            _mostrarImagen(),
-            _botonAnalisis()
-            ],
-          ),
+      body: Stack(children: <Widget>[
+        _vista(),
+        _crearLoading()
+      ],)
+    );
+  }
+
+
+  Widget _vista(){
+    return Container(
+      child: SingleChildScrollView(
+        child: Column( 
+          children: <Widget>[
+           _mostrarImagen(),
+           _botonAnalisis()
+          ],
         ),
       ),
     );
@@ -104,7 +113,9 @@ class _AnalisysPageState extends State<AnalisysPage> {
           child: Text( 
             'Iniciar análisis'
           ),
-          onPressed: (){},
+          onPressed: (){
+           
+          },
         ),
       ),
     );
@@ -116,9 +127,22 @@ class _AnalisysPageState extends State<AnalisysPage> {
     });
   }
 
-  // Widget _status() {
-  //   return Text(status);
-  // }
+  Widget _crearLoading() {
+    if (_isLoading) {
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[CircularProgressIndicator()],
+          )
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
 
   _procesarImagen(ImageSource origin) async {
     foto = await ImagePicker.pickImage(source: origin);
@@ -135,6 +159,12 @@ class _AnalisysPageState extends State<AnalisysPage> {
     _setStatus('');
   }
 
+
+  void _setLoading(bool status) {
+    setState(() {
+      _isLoading = status;
+    });
+  }
 
 
 }
