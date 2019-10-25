@@ -18,6 +18,11 @@ class _AnalisysPageState extends State<AnalisysPage> {
   String status = '';
   bool _isLoading = false;
   bool _isEnable = false; //boton analisis
+  bool _isUpload = false;
+
+  var _resultado = '';
+
+  AnalasisProvider analisisProv = AnalasisProvider();
 
   AnalasisProvider analisiProvider = AnalasisProvider();
 
@@ -39,7 +44,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
         ],
       ),
       body: Stack(children: <Widget>[
-        _vista(),
+        _isUpload ? _vistaAnalisis() :  _vista(),
         _crearLoading()
       ],)
     );
@@ -58,6 +63,20 @@ class _AnalisysPageState extends State<AnalisysPage> {
       ),
     );
   }
+
+  Widget _vistaAnalisis(){
+    return Container(
+      child: SingleChildScrollView(
+        child: Column( 
+          children: <Widget>[
+            
+            Text('Hi')
+          ],
+        ),
+      ),
+    );
+  }  
+
 
   Widget _botonTomar() {
     return Container(
@@ -133,9 +152,17 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
       String resp = await analisiProvider.subirImagen(foto);
 
+
       if (resp != null) {
+
+        var an = await analisiProvider.getResultado(resp);
+
+        print(an);
+
        _setLoading(false);
+       _setUpload(true);
        mostrarAlerta(context, 'Imagen cargada exitosamente!', 'Info');
+
 
       }else{
         _setLoading(false);
@@ -148,6 +175,9 @@ class _AnalisysPageState extends State<AnalisysPage> {
       _isEnable = status;
     });
   }
+
+
+
 
   Widget _crearLoading() {
     if (_isLoading) {
@@ -189,6 +219,12 @@ class _AnalisysPageState extends State<AnalisysPage> {
   void _setLoading(bool status) {
     setState(() {
       _isLoading = status;
+    });
+  }
+
+   void _setUpload(bool status) {
+    setState(() {
+      _isUpload = status;
     });
   }
 
