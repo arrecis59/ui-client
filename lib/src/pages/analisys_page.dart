@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter/material.dart';
+import 'package:ui_client/src/providers/analisis_provider.dart';
+import 'package:ui_client/src/utils/utils.dart';
 
 class AnalisysPage extends StatefulWidget {
   AnalisysPage({Key key}) : super(key: key);
@@ -14,12 +16,21 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   File foto;
   String status = '';
+  bool _isLoading = false;
+  bool _isEnable = false; //boton analisis
+  bool _isUpload = false;
+
+  var _resultado = '';
+
+  AnalasisProvider analisisProv = AnalasisProvider();
+
+  AnalasisProvider analisiProvider = AnalasisProvider();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink.shade200,
+        backgroundColor: Colors.green.shade300,
         actions: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -32,18 +43,40 @@ class _AnalisysPageState extends State<AnalisysPage> {
           )
         ],
       ),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-            _mostrarImagen(),
-            _botonAnalisis()
-            ],
-          ),
+      body: Stack(children: <Widget>[
+        _isUpload ? _vistaAnalisis() :  _vista(),
+        _crearLoading()
+      ],)
+    );
+  }
+
+
+  Widget _vista(){
+    return Container(
+      child: SingleChildScrollView(
+        child: Column( 
+          children: <Widget>[
+           _mostrarImagen(),
+           _botonAnalisis()
+          ],
         ),
       ),
     );
   }
+
+  Widget _vistaAnalisis(){
+    return Container(
+      child: SingleChildScrollView(
+        child: Column( 
+          children: <Widget>[
+            
+            Text('Hi')
+          ],
+        ),
+      ),
+    );
+  }  
+
 
   Widget _botonTomar() {
     return Container(
@@ -99,43 +132,101 @@ class _AnalisysPageState extends State<AnalisysPage> {
         minWidth: MediaQuery.of(context).size.width / 2,
         height: 40.0,
         child: RaisedButton( 
-          // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
-          color: Colors.pink.shade200,
+          color:  Colors.green.shade300,
           textColor: Colors.white,
           child: Text( 
             'Iniciar análisis'
           ),
-          onPressed: (){},
+          onPressed: _isEnable ? _iniciarAnalisis : null,
         ),
       ),
     );
   }
 
-  _setStatus(String message) {
+  void _iniciarAnalisis() async{
+
+    if (foto != null) {
+      
+      _setButtonStatus(false);
+      _setLoading(true);
+
+      String resp = await analisiProvider.subirImagen(foto);
+
+
+      if (resp != null) {
+
+        var an = await analisiProvider.getResultado(resp);
+
+        print(an);
+
+       _setLoading(false);
+       _setUpload(true);
+       mostrarAlerta(context, 'Imagen cargada exitosamente!', 'Info');
+
+
+      }else{
+        _setLoading(false);
+      }
+    }
+  }
+
+  _setButtonStatus(bool status){
     setState(() {
-      status = message;
+      _isEnable = status;
     });
   }
 
-  // Widget _status() {
-  //   return Text(status);
-  // }
+
+
+
+  Widget _crearLoading() {
+    if (_isLoading) {
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[CircularProgressIndicator()],
+          )
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
 
   _procesarImagen(ImageSource origin) async {
     foto = await ImagePicker.pickImage(source: origin);
-    setState(() {});
+    
+    if(foto != null){
+      _setButtonStatus(true);
+    }else{
+      setState(() {});
+    }
+
   }
 
   _seleccionarImagen() async {
     _procesarImagen(ImageSource.gallery);
-    _setStatus('');
   }
 
   _tomarImagen() async {
     _procesarImagen(ImageSource.camera);
-    _setStatus('');
   }
 
+
+  void _setLoading(bool status) {
+    setState(() {
+      _isLoading = status;
+    });
+  }
+
+   void _setUpload(bool status) {
+    setState(() {
+      _isUpload = status;
+    });
+  }
 
 
 }

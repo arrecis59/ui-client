@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   List<NavigationItem> items = [
     NavigationItem(Icon(Icons.home), Text('Home'), Colors.blue.shade300),
-    NavigationItem(Icon(Icons.insert_chart), Text('Análisis'), Colors.pink.shade200),
+    NavigationItem(Icon(Icons.insert_chart), Text('Análisis'), Colors.green.shade300),
     NavigationItem(Icon(Icons.history), Text('Historial'), Colors.deepOrange.shade300),
     NavigationItem(Icon(Icons.person_outline), Text('Cuenta'), Colors.teal.shade200),
   ];
