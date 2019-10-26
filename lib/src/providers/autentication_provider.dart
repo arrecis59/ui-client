@@ -4,7 +4,7 @@ import 'package:ui_client/src/preferecias_usuario/preferencias_usuario.dart';
 
 class AutenticationProvider {
 
-  final String _apiKey = 'AIzaSyAHWcPxXXNKIexUep9XDnPdHrXAb2H2t20';
+  final String _apiKey = 'AIzaSyBIosVtg-JwEpYSJPI2rIrpJGCQGQEP6uA';
   final _prefs = PreferenciasUsuario();
 
   Future<Map<String, dynamic>> ingresar(String email, String password) async {
