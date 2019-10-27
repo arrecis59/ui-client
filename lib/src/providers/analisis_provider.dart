@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';;
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:mime_type/mime_type.dart';
 import 'package:http_parser/http_parser.dart';
@@ -40,12 +40,10 @@ class AnalasisProvider {
     return respData['secure_url'];
   }
 
-  Future<dynamic> getResultado(String rutaImg) async {
-
-    print('entro');
+  Future<dynamic> detectarEnfermedad(String rutaImg) async {
 
     //URL API
-    final url ='http://10.0.2.2:4000/detectar?img=$rutaImg';
+    final url ='https://app-enfermedades.herokuapp.com/analizarImagen?=$rutaImg';
 
     //PETICION HTTP GET
     final resp = await http.get(url, headers: {

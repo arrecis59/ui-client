@@ -20,8 +20,6 @@ class _AnalisysPageState extends State<AnalisysPage> {
   bool _isEnable = false; //boton analisis
   bool _isUpload = false;
 
-  var _resultado = '';
-
   AnalasisProvider analisisProv = AnalasisProvider();
 
   AnalasisProvider analisiProvider = AnalasisProvider();
@@ -155,9 +153,9 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
       if (resp != null) {
 
-        var an = await analisiProvider.getResultado(resp);
+        var enfermedad = await analisiProvider.detectarEnfermedad(resp);
 
-        print(an);
+        print(enfermedad);
 
        _setLoading(false);
        _setUpload(true);
