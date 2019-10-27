@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter/material.dart';
+import 'package:ui_client/src/preferecias_usuario/preferencias_usuario.dart';
 import 'package:ui_client/src/providers/analisis_provider.dart';
 import 'package:ui_client/src/utils/utils.dart';
 
@@ -19,10 +20,16 @@ class _AnalisysPageState extends State<AnalisysPage> {
   bool _isLoading = false;
   bool _isEnable = false; //boton analisis
   bool _isUpload = false;
+  var enfermedad;
+  var sintomas;
+  var statusInsert;
 
   AnalasisProvider analisisProv = AnalasisProvider();
 
   AnalasisProvider analisiProvider = AnalasisProvider();
+
+
+  final prefs = new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +75,10 @@ class _AnalisysPageState extends State<AnalisysPage> {
         child: Column( 
           children: <Widget>[
             
-            Text('Hi')
+            Text(enfermedad.toString()),
+            Text(sintomas.toString()),
+            Text(statusInsert.toString()),
+
           ],
         ),
       ),
@@ -153,9 +163,16 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
       if (resp != null) {
 
-        var enfermedad = await analisiProvider.detectarEnfermedad(resp);
+        enfermedad = await analisiProvider.detectarEnfermedad(resp);
 
-        print(enfermedad);
+        var objEnfermedad = enfermedad[0]['name'];
+
+        sintomas = await analisiProvider.consultarSintomas(objEnfermedad);
+        print(sintomas);
+
+        statusInsert = await analisiProvider.insertarHistorial(prefs.email, resp, objEnfermedad, 'Media', '27/10/2019', 10.2, 'Guatemala, City');
+        print(sintomas);
+
 
        _setLoading(false);
        _setUpload(true);
