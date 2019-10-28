@@ -144,7 +144,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            onTap: (){},
+            onTap: (){
+              Navigator.pushReplacementNamed(context, 'register');
+            },
           ),
           SizedBox(height: 30.0,),
           ],
