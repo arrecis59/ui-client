@@ -81,9 +81,34 @@ class AnalasisProvider {
 
     //decodificar respuesta a json
     final decodeData = json.decode(resp.body);
-
+    
     //retorna sintomas encontrados segun enfermedad
     return decodeData['sintomas'];
+
+  }
+
+  //CONSULTAR HISTORIAL
+  Future<dynamic> consultarHistorial(String _email) async{
+
+    //URL api
+    final url = '$urlApi/consultarHistorial?email=$_email';
+
+    //peticion http get
+    final resp = await http.get(url, headers: {
+       HttpHeaders.contentTypeHeader: "application/json",
+    });
+
+    //comprobar si hubieron errores
+    if(resp.statusCode != 200){
+      print('error en consultar historial');
+      return null;
+    }
+
+    //decodificar respuesta a json
+    final decodeData = json.decode(resp.body);
+
+    //retorna historial segun usuario
+    return decodeData['historial'];
 
   }
 
