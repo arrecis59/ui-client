@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                 fontWeight: FontWeight.w500
               ),
               ),
-              onPressed: _iniciarSesion,
+              onPressed: _isLoading ? null: _iniciarSesion,
             ),
           ),
           ),
