@@ -15,7 +15,7 @@ class _MainPageState extends State<MainPage> {
   String sweet = "se caracteriza por una constelación de síntomas entre ellos fiebre, neutrofilia, lesiones cutaneas dolorosas (pápulas)" +
   ". El sindrome puede observarse en tres situaciones clásica, asociada al cancer y inducida por fármacos";
 
-  String iderma = "centro especializado en dermatología clínica y cirugía con bajos precios de atención." +
+  String iderma = "centro especializado en dermatología clínica y cirugía con bajos precios de atención. " +
   "Ubicado en Calzada San Juan 32-11 Zona 7";
 
   @override
