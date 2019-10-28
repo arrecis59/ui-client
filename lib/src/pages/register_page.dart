@@ -134,7 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 fontWeight: FontWeight.w500
               ),
               ),
-              onPressed: _crearCuenta,
+              onPressed: _isLoading ? null : _crearCuenta,
             ),
           ),
           ),

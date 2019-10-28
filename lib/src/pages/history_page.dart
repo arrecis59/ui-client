@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_client/src/models/dog_model.dart';
+import 'package:ui_client/src/preferecias_usuario/preferencias_usuario.dart';
 import 'package:ui_client/src/providers/analisis_provider.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -10,6 +11,8 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+
+  final prefs = new PreferenciasUsuario();
   AnalasisProvider anProvider = AnalasisProvider();
   bool existeHistorial = false;
   int nElementos = 0;
@@ -39,7 +42,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
     return FutureBuilder(
 
-      future: anProvider.consultarHistorial('arrecis59@gmail.com'),
+      future: anProvider.consultarHistorial(prefs.email),
       builder: (BuildContext context, snapshot) {
 
         if (snapshot.hasData) {
@@ -172,42 +175,4 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
-  Widget _noticia(String fecha) {
-    return Container(
-      width: MediaQuery.of(context).size.width / 1.2,
-      padding: EdgeInsets.all(30.0),
-      margin: EdgeInsets.symmetric(vertical: 20.0),
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(
-            color: Color.fromRGBO(185, 194, 194, 0.56),
-            blurRadius: 20.0,
-            offset: Offset(0, 10.0))
-      ]),
-      child: Column(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Text(
-                fecha,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: 15.0,
-              ),
-              Text(
-                'hola',
-                textAlign: TextAlign.justify,
-                style: TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w300,
-                  color: Color.fromRGBO(63, 66, 66, 0.6),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
 }
