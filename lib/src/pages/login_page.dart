@@ -140,7 +140,8 @@ class _LoginPageState extends State<LoginPage> {
                 'Crear cuenta'.toUpperCase(),
                 style: TextStyle( 
                   color: Color.fromRGBO(63, 66, 66, 0.8),
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13.4
                 ),
               ),
             ),
