@@ -98,17 +98,14 @@ class _AccountPageState extends State<AccountPage> {
       child: ButtonTheme(
         minWidth: MediaQuery.of(context).size.width / 1.5,
         height: 48.0,
-        child: OutlineButton(
+        child: FlatButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
-              borderSide: BorderSide( 
-                color: Colors.teal.shade100
-              ),
           color: Colors.teal.shade200,
           textColor: Colors.teal.shade200,
           child: Text(
             'Cerrar Sesión'.toUpperCase(),
-            style: TextStyle(fontWeight: FontWeight.w400),
+            style: TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
           ),
           onPressed:(){
             Navigator.pushReplacementNamed(context, '/');
