@@ -134,7 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 fontWeight: FontWeight.w500
               ),
               ),
-              onPressed: _iniciarSesion,
+              onPressed: _crearCuenta,
             ),
           ),
           ),
@@ -175,30 +175,6 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
 
-   void _iniciarSesion() async {
-
-    if(emailController.text !='' && emailController.text !=''){
-
-      _setLoading(true);
-
-      Map info = await authProvider.ingresar(emailController.text, passwordController.text);
-
-      if (info['ok']) {
-        
-        _setLoading(false);
-        Navigator.pushReplacementNamed(context, 'home');
-      } else {
-        
-        _setLoading(false);
-        mostrarAlerta(context, info['message'], 'error');
-      }
-
-    }else{
-      mostrarAlerta(context,'Ingrese correo y contraseña', 'error');
-    }
-  }
-
-
    Widget _crearLoading() {
     if (_isLoading) {
       return Column(
@@ -214,6 +190,30 @@ class _RegisterPageState extends State<RegisterPage> {
     } else {
       return Container();
     }
+  }
+
+
+  void _crearCuenta() async{
+    
+    if( emailController.text !='' && passwordController.text !='' ){
+
+      _setLoading(true);
+
+      Map info = await authProvider.nuevoUsuario(emailController.text, passwordController.text);
+
+      if(info['ok']){
+
+        _setLoading(false);
+        Navigator.pushReplacementNamed(context, '/');
+      }else{
+
+        _setLoading(false);
+        mostrarAlerta(context, info['message'], 'error');
+      }
+    }else{
+       mostrarAlerta(context, 'Ingrese correo y contraseña', 'error');
+    }
+ 
   }
 
   void _setLoading(bool status) {
