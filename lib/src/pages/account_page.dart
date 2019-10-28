@@ -9,7 +9,6 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-
   final prefs = new PreferenciasUsuario();
 
   @override
@@ -23,15 +22,99 @@ class _AccountPageState extends State<AccountPage> {
         backgroundColor: Colors.teal.shade200,
       ),
       body: Stack(
+        children: <Widget>[_vistaNoticias()],
+      ),
+    );
+  }
+
+  Widget _vistaNoticias() {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              _panel(),
+              _botonCerrarSesion()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _panel() {
+    return Container(
+      width: MediaQuery.of(context).size.width / 1.2,
+      padding: EdgeInsets.all(30.0),
+      margin: EdgeInsets.only(top: 50.0, bottom: 30.0),
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+        BoxShadow(
+            color: Color.fromRGBO(185, 194, 194, 0.56),
+            blurRadius: 20.0,
+            offset: Offset(0, 10.0))
+      ]),
+      child: Column(
         children: <Widget>[
-         _vistaCuenta()
+          Column(
+            children: <Widget>[
+              Image(
+                image: AssetImage('assets/account-circle.png'),
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              Text(
+                prefs.email,
+                textAlign: TextAlign.justify,
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w600,
+                  color: Color.fromRGBO(63, 66, 66, 0.6),
+                ),
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              Text(
+                'Guatemala city',
+                textAlign: TextAlign.justify,
+                style: TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w300,
+                  color: Color.fromRGBO(63, 66, 66, 0.6),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
   }
 
-  Widget _vistaCuenta(){
-    return Container();
+  Widget _botonCerrarSesion() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10.0),
+      child: ButtonTheme(
+        minWidth: MediaQuery.of(context).size.width / 1.5,
+        height: 48.0,
+        child: OutlineButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
+              borderSide: BorderSide( 
+                color: Colors.teal.shade100
+              ),
+          color: Colors.teal.shade200,
+          textColor: Colors.teal.shade200,
+          child: Text(
+            'Cerrar Sesión'.toUpperCase(),
+            style: TextStyle(fontWeight: FontWeight.w400),
+          ),
+          onPressed:(){
+            Navigator.pushReplacementNamed(context, '/');
+          },
+        ),
+      ),
+    );
   }
-
 }
