@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
             child: FlatButton(
             shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
-              color: Color.fromRGBO(47, 181, 121, 0.5),
+              color: Color.fromRGBO(47, 181, 121, 0.69),
               textColor: Colors.white,
               child: Text(
               'Ingresar'.toUpperCase(),
