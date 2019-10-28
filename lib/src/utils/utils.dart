@@ -19,7 +19,7 @@ void mostrarAlerta(BuildContext context, String message, String type) {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           actions: <Widget>[
             Container(
-              child: RaisedButton(
+              child: FlatButton(
                 child: Text(
                   'ok'.toUpperCase(),
                   style: TextStyle(color: Colors.white),
@@ -29,6 +29,7 @@ void mostrarAlerta(BuildContext context, String message, String type) {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
+                color: Color.fromRGBO(47, 181, 121, 0.5),
               ),
             )
           ],
