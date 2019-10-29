@@ -100,7 +100,9 @@ class _AccountPageState extends State<AccountPage> {
       padding: EdgeInsets.symmetric(horizontal: 70.0),
       child: ButtonTheme(
         child: FlatButton( 
-        onPressed: (){},
+        onPressed: (){
+          Navigator.pushReplacementNamed(context, '/');
+        },
         color: Colors.teal.shade200,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.0)
