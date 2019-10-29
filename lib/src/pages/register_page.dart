@@ -145,7 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text( 
-                  '¿Ya tienes cuenta?'.toUpperCase(),
+                  '¿Ya tienes cuenta?',
                     style: TextStyle( 
                       color: Color.fromRGBO(63, 66, 66, 0.6),
                       fontWeight: FontWeight.w400,
