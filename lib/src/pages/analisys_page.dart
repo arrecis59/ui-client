@@ -41,6 +41,13 @@ class _AnalisysPageState extends State<AnalisysPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.blue.shade300,
+          title: Text(
+            'Análisis de enfermedades',
+            style: TextStyle( 
+              fontSize: 15.0,
+              color: Colors.white
+            ),
+          ),
           actions: <Widget>[
             Container(
               child: Row(
