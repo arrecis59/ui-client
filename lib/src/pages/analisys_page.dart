@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
@@ -14,12 +15,16 @@ class AnalisysPage extends StatefulWidget {
 }
 
 class _AnalisysPageState extends State<AnalisysPage> {
-
   File foto;
   String status = '';
   bool _isLoading = false;
-  bool _isEnable = false; //boton analisis
-  bool _isUpload = false;
+  bool _isEnableCargarImagen = false; //boton analisis
+  bool _isEnableEnviarSintomas = true; //boton analisis
+
+  bool _isStep1 = true;
+  bool _isStep2 = false;
+  bool _isStep3 = false;
+
   var enfermedad;
   var sintomas;
   var statusInsert;
@@ -28,172 +33,331 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   AnalasisProvider analisiProvider = AnalasisProvider();
 
-
   final prefs = new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green.shade300,
-        actions: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              children: <Widget>[
-                _botonTomar(),
-                _botonSeleccionar(),
-              ],
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.blue.shade300,
+          actions: <Widget>[
+            Container(
+              child: Row(
+                children: <Widget>[
+                  _botonTomarFotografia(),
+                  _botonSeleccionarImagen()
+                ],
+              ),
+            )
+          ],
+        ),
+        body: Stack(
+          children: <Widget>[
+            _determinarVista(),
+            _crearLoading()
+            ],
+        ));
+  }
+
+
+  Widget _determinarVista(){
+
+    Widget vista = Container();
+
+    if(_isStep1){
+      vista = _vistaPaso1();
+    }else if(_isStep2){
+      vista = _vistaPaso2();
+    }else if(_isStep3){
+      vista = _vistaPaso3();
+    }
+
+    return vista;
+  }
+
+  //VISTA PANTALLA 1
+  Widget _vistaPaso1() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      padding: EdgeInsets.all(10.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 10.0,),
+            _paso1(),
+            Container(
+                margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                      color: Color.fromRGBO(185, 194, 194, 0.56),
+                      blurRadius: 20.0,
+                      offset: Offset(0, 10)
+                  )
+                ]),
+                child: _mostrarImagen()
             ),
-          )
-        ],
-      ),
-      body: Stack(children: <Widget>[
-        _isUpload ? _vistaAnalisis() :  _vista(),
-        _crearLoading()
-      ],)
-    );
-  }
-
-
-  Widget _vista(){
-    return Container(
-      child: SingleChildScrollView(
-        child: Column( 
-          children: <Widget>[
-           _mostrarImagen(),
-           _botonAnalisis()
+            _botonCargarImagen()
           ],
         ),
       ),
     );
   }
 
-  Widget _vistaAnalisis(){
-    return Container(
-      child: SingleChildScrollView(
-        child: Column( 
-          children: <Widget>[
-            
-            Text(enfermedad.toString()),
-            Text(sintomas.toString()),
-            Text(statusInsert.toString()),
+  //PASO 1
+  Widget _paso1(){
+    return Row( 
+      children: <Widget>[
+        Container( 
+          margin: EdgeInsets.only(left: 20.0),
+          child: ClipOval( 
+            child: Container( 
+              color: Colors.orange.shade400,
+              width: 30.0,
+              height: 30.0,
+              child: Center( 
+                child: Text(
+                '1',
+                  style: TextStyle( 
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              )
+            ),
+        ),
+        ),
+        Container( 
+          margin: EdgeInsets.only(left: 10.0),
+          child: Text(
+          ' Seleccionar o tomar de fotografía.',
+            style: TextStyle( 
+              color: Color.fromRGBO(63, 66, 66, 0.8),
+              fontSize: 16,
+              fontWeight: FontWeight.w300
+            ),
+          ),
+        )
+      ],
+    );
+  }
 
+  //VISTA PANTALLA 2
+  Widget _vistaPaso2() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      padding: EdgeInsets.all(10.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 10.0,),
+            _paso2(),
+            Container(
+                margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                      color: Color.fromRGBO(185, 194, 194, 0.56),
+                      blurRadius: 20.0,
+                      offset: Offset(0, 10)
+                  )
+                ]),
+                child: Text('Poner aquí checkboxs')
+            ),
+            _botonEnviarSintomas()
           ],
         ),
       ),
     );
-  }  
+  }
 
+  //PASO 2
+  Widget _paso2(){
+    return Row( 
+      children: <Widget>[
+        Container( 
+          margin: EdgeInsets.only(left: 20.0),
+          child: ClipOval( 
+            child: Container( 
+              color: Colors.orange.shade400,
+              width: 30.0,
+              height: 30.0,
+              child: Center( 
+                child: Text(
+                '2',
+                  style: TextStyle( 
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              )
+            ),
+        ),
+        ),
+        Container( 
+          margin: EdgeInsets.only(left: 10.0),
+          child: Text(
+          ' Seleccionar síntomas.',
+            style: TextStyle( 
+              color: Color.fromRGBO(63, 66, 66, 0.8),
+              fontSize: 16,
+              fontWeight: FontWeight.w300
+            ),
+          ),
+        )
+      ],
+    );
+  }
 
-  Widget _botonTomar() {
+  //VISTA PANTALLA 3
+  Widget _vistaPaso3() {
     return Container(
-      child: IconButton(
-        icon: Icon(Icons.camera),
-        color: Colors.white,
-        onPressed: _tomarImagen,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      padding: EdgeInsets.all(10.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 10.0,),
+            _paso3(),
+            Container(
+                margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                      color: Color.fromRGBO(185, 194, 194, 0.56),
+                      blurRadius: 20.0,
+                      offset: Offset(0, 10)
+                  )
+                ]),
+                child: Text('Poner aquí resultado análisis')
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _botonSeleccionar() {
-    return Container(
-      child: IconButton(
-        icon: Icon(Icons.photo_size_select_actual),
-        color: Colors.white,
-        onPressed: _seleccionarImagen,
-      ),
+  //PASO 3
+  Widget _paso3(){
+    return Row( 
+      children: <Widget>[
+        Container( 
+          margin: EdgeInsets.only(left: 20.0),
+          child: ClipOval( 
+            child: Container( 
+              color: Colors.orange.shade400,
+              width: 30.0,
+              height: 30.0,
+              child: Center( 
+                child: Text(
+                '3',
+                  style: TextStyle( 
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              )
+            ),
+        ),
+        ),
+        Container( 
+          margin: EdgeInsets.only(left: 10.0),
+          child: Text(
+          ' Resultados del análisis.',
+            style: TextStyle( 
+              color: Color.fromRGBO(63, 66, 66, 0.8),
+              fontSize: 16,
+              fontWeight: FontWeight.w300
+            ),
+          ),
+        )
+      ],
     );
   }
 
+  //MOSTRAR IMAGEN
   Widget _mostrarImagen() {
-
-    double _width = MediaQuery.of(context).size.width;
-
     if (foto != null) {
-      return Container( 
-        margin: EdgeInsets.only(top: 10.0),
+      return Container(
         child: Image.file(
           File(foto.path),
-          width: _width,
           height: 300.0,
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
         ),
       );
     } else {
-      return Container( 
-        margin: EdgeInsets.only(top: 20.0),
+      return Container(
         child: Image(
           image: AssetImage('assets/no-image.png'),
           height: 300.0,
-          fit: BoxFit.cover
+          fit: BoxFit.cover,
         ),
       );
     }
   }
 
 
-  Widget _botonAnalisis(){
-    return Container( 
-      margin: EdgeInsets.symmetric(vertical: 15.0),
-      child: ButtonTheme( 
-        minWidth: MediaQuery.of(context).size.width / 2,
-        height: 40.0,
-        child: RaisedButton( 
-          color:  Colors.green.shade300,
-          textColor: Colors.white,
-          child: Text( 
-            'Iniciar análisis'
-          ),
-          onPressed: _isEnable ? _iniciarAnalisis : null,
+  //BOTON INICIAR ANALISIS
+  Widget _botonCargarImagen(){
+    return FlatButton( 
+      color: Colors.blue.shade300,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0)
+      ),
+      child: Text(
+        'Continuar',
+        style: TextStyle( 
+          color: _isEnableCargarImagen ? Colors.white : Colors.grey,
+          fontSize: 16.0,
+          fontWeight: FontWeight.w300
         ),
       ),
+      onPressed: _isEnableCargarImagen ? _subirImagen: null,
     );
   }
 
-  void _iniciarAnalisis() async{
-
-    if (foto != null) {
-      
-      _setButtonStatus(false);
-      _setLoading(true);
-
-      String resp = await analisiProvider.subirImagen(foto);
-
-
-      if (resp != null) {
-
-        enfermedad = await analisiProvider.detectarEnfermedad(resp);
-
-        var objEnfermedad = enfermedad[0]['name'];
-
-        sintomas = await analisiProvider.consultarSintomas(objEnfermedad);
-        print(sintomas);
-
-        statusInsert = await analisiProvider.insertarHistorial(prefs.email, resp, objEnfermedad, 'Media', '27/10/2019', 10.2, 'Guatemala, City');
-        print(sintomas);
-
-
-       _setLoading(false);
-       _setUpload(true);
-       mostrarAlerta(context, 'Imagen cargada exitosamente!', 'Info');
-
-
-      }else{
-        _setLoading(false);
-      }
-    }
+  //BOTON INICIAR ANALISIS
+  Widget _botonEnviarSintomas(){
+    return FlatButton( 
+      color: Colors.blue.shade300,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0)
+      ),
+      child: Text(
+        'Continuar',
+        style: TextStyle( 
+          color: _isEnableEnviarSintomas ? Colors.white : Colors.grey,
+          fontSize: 16.0,
+          fontWeight: FontWeight.w300
+        ),
+      ),
+      onPressed: _isEnableEnviarSintomas ? _enviarSintomas : null,
+    );
   }
 
-  _setButtonStatus(bool status){
-    setState(() {
-      _isEnable = status;
-    });
+  //BOTON TOMAR FOTOGRAFIA
+  Widget _botonTomarFotografia() {
+    return IconButton(
+      icon: Icon(Icons.camera),
+      color: Colors.white,
+      onPressed: _tomarImagen,
+    );
   }
 
+  //BOTON SELECCIONAR IMAGEN
+  Widget _botonSeleccionarImagen() {
+    return IconButton(
+      icon: Icon(Icons.photo_size_select_actual),
+      color: Colors.white,
+      onPressed: _seleccionarImagen,
+    );
+  }
 
-
-
+  //CREAR WIDGET DE CARGA
   Widget _crearLoading() {
     if (_isLoading) {
       return Column(
@@ -211,37 +375,111 @@ class _AnalisysPageState extends State<AnalisysPage> {
     }
   }
 
-  _procesarImagen(ImageSource origin) async {
-    foto = await ImagePicker.pickImage(source: origin);
-    
-    if(foto != null){
-      _setButtonStatus(true);
-    }else{
-      setState(() {});
+
+  //ENVIAR SINTOMAS
+  _enviarSintomas() async{
+
+      _setStep1(false);
+      _setStep2(false);
+      _setStep3(true);
+  }
+
+  //SUBIR IMAGEN
+  _subirImagen() async{
+
+     if (foto != null) {
+      
+      _setButtonCargarImagenStatus(false);
+      _setLoading(true);
+
+      String resp = await analisiProvider.subirImagen(foto);
+
+
+      if (resp != null) {
+
+        enfermedad = await analisiProvider.detectarEnfermedad(resp);
+
+        var objEnfermedad = enfermedad[0]['name'];
+
+        sintomas = await analisiProvider.consultarSintomas(objEnfermedad);
+        print(sintomas);
+
+        statusInsert = await analisiProvider.insertarHistorial(prefs.email, resp, objEnfermedad, 'Media', '27/10/2019', 10.2, 'Guatemala, City');
+        print(sintomas);
+
+      //set variables de control
+       _setLoading(false);
+
+      //set paso 2 activado
+      _setStep1(false);
+      _setStep2(true);
+
+
+      }else{
+        _setLoading(false);
+        mostrarAlerta(context, 'Error al cargar fotografía intentelo nuevamente', 'Info');
+        setState(() {});
+      }
+
     }
 
   }
 
+  //LLENA LA VARIABLE FOTO CON EL SOURCE
+  _procesarImagen(ImageSource origin) async {
+
+    foto = await ImagePicker.pickImage(source: origin);
+    
+    if (foto != null) {
+      _setButtonCargarImagenStatus(true);
+      setState(() {});
+    } else {
+      setState(() {});
+    }
+  }
+
+  //SELECCIONAR IMAGEN DESDE GALERIA
   _seleccionarImagen() async {
     _procesarImagen(ImageSource.gallery);
   }
 
+  //TOMAR IMAGEN
   _tomarImagen() async {
     _procesarImagen(ImageSource.camera);
   }
 
+  //HABILITA O DESHABILITA EL BOTON CARGAR IMAGEN
+  _setButtonCargarImagenStatus(bool status){
+    setState(() {
+      _isEnableCargarImagen = status;
+    });
+  }
 
-  void _setLoading(bool status) {
+  //HABILITA O DESHABILITA EL LOADING
+  _setLoading(bool status) {
     setState(() {
       _isLoading = status;
     });
   }
 
-   void _setUpload(bool status) {
+  //CAMBIA EL ESTADO PASO 2
+  _setStep2(bool status) {
     setState(() {
-      _isUpload = status;
+      _isStep2 = status;
+    });
+  }
+  //CAMBIA EL ESTADO PASO 2
+  _setStep1(bool status) {
+    setState(() {
+      _isStep1 = status;
     });
   }
 
+  //CAMBIA EL ESTADO PASO 2
+  _setStep3(bool status) {
+    setState(() {
+      _isStep3 = status;
+    });
+  }
 
 }
