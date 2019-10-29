@@ -58,8 +58,10 @@ class _AccountPageState extends State<AccountPage> {
         children: <Widget>[
           Column(
             children: <Widget>[
-              Image(
-                image: AssetImage('assets/account-circle.png'),
+              Icon(
+                Icons.account_circle,
+                size: 100.0,
+                color: Color.fromRGBO(63, 66, 66, 0.9),
               ),
               SizedBox(
                 height: 15.0,
@@ -74,7 +76,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
               SizedBox(
-                height: 15.0,
+                height: 8.0,
               ),
               Text(
                 'Guatemala city',
@@ -105,7 +107,7 @@ class _AccountPageState extends State<AccountPage> {
           textColor: Colors.teal.shade200,
           child: Text(
             'Cerrar Sesión'.toUpperCase(),
-            style: TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
+            style: TextStyle(fontWeight: FontWeight.w400, color: Colors.white, fontSize: 13.0),
           ),
           onPressed:(){
             Navigator.pushReplacementNamed(context, '/');
