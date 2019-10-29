@@ -22,12 +22,12 @@ class _AccountPageState extends State<AccountPage> {
         backgroundColor: Colors.teal.shade200,
       ),
       body: Stack(
-        children: <Widget>[_vistaNoticias()],
+        children: <Widget>[_vistaAccount()],
       ),
     );
   }
 
-  Widget _vistaNoticias() {
+  Widget _vistaAccount() {
     return Container(
       height: MediaQuery.of(context).size.height,
       child: SingleChildScrollView(
@@ -96,22 +96,24 @@ class _AccountPageState extends State<AccountPage> {
 
   Widget _botonCerrarSesion() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10.0),
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.symmetric(horizontal: 70.0),
       child: ButtonTheme(
-        minWidth: MediaQuery.of(context).size.width / 1.5,
-        height: 48.0,
-        child: FlatButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
-          color: Colors.teal.shade200,
-          textColor: Colors.teal.shade200,
-          child: Text(
-            'Cerrar Sesión'.toUpperCase(),
-            style: TextStyle(fontWeight: FontWeight.w400, color: Colors.white, fontSize: 13.0),
+        child: FlatButton( 
+        onPressed: (){},
+        color: Colors.teal.shade200,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.0)
           ),
-          onPressed:(){
-            Navigator.pushReplacementNamed(context, '/');
-          },
+          
+          child: Text(
+          'Cerrar sesión',
+            style: TextStyle( 
+              color: Colors.white,
+              fontSize: 15.0,
+              fontWeight: FontWeight.w300
+            ),
+          ),
         ),
       ),
     );
