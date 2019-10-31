@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
@@ -31,8 +31,6 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   AnalasisProvider analisisProv = AnalasisProvider();
 
-  AnalasisProvider analisiProvider = AnalasisProvider();
-
   final prefs = new PreferenciasUsuario();
 
   @override
@@ -61,6 +59,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
         ),
         body: Stack(
           children: <Widget>[
+            _isStep2 ? _paso2() : Container(),
             _determinarVista(),
             _crearLoading()
             ],
@@ -151,33 +150,80 @@ class _AnalisysPageState extends State<AnalisysPage> {
     );
   }
 
+
+
   //VISTA PANTALLA 2
   Widget _vistaPaso2() {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      padding: EdgeInsets.all(10.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 10.0,),
-            _paso2(),
-            Container(
-                margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                  BoxShadow(
+      margin: EdgeInsets.only(top: 60.0),
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      child: _crearCheckBox(),
+    );
+  }
+
+  //GENERAR CHECKBOX
+ Widget _crearCheckBox() {
+
+    return FutureBuilder(
+
+      future: analisisProv.consultarSintomas(enfermedad[0]['name']),
+      builder: (BuildContext context, snapshot) {
+
+        if (snapshot.hasData) {
+          
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, i){
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(top: 14.0, bottom: 4.0, left: 5.0, right: 5.0),
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                decoration: BoxDecoration( 
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow( 
                       color: Color.fromRGBO(185, 194, 194, 0.56),
                       blurRadius: 20.0,
-                      offset: Offset(0, 10)
-                  )
-                ]),
-                child: Text('Poner aquí checkboxs')
-            ),
-            _botonEnviarSintomas()
-          ],
-        ),
-      ),
+                      offset: Offset(0.0, 10.0)
+                    )
+                  ]
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Text(snapshot.data[i]),
+                    Checkbox( 
+                      onChanged: (bool value){
+
+                      },
+                      value: false,
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+
+        } else {
+          return Center( 
+            child: Column( 
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Image( 
+                  image: AssetImage('assets/nofound.png'),
+                ),
+                SizedBox(height: 20.0,),
+                Text(
+                  '!Ups ha ocurrido un problema',
+                   style: TextStyle( 
+                     color: Color.fromRGBO(63, 66, 66, 0.8),
+                   ),
+                )
+              ],
+            )
+          );
+        }
+      },
     );
   }
 
@@ -187,6 +233,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
       children: <Widget>[
         Container( 
           margin: EdgeInsets.only(left: 20.0),
+          padding: EdgeInsets.symmetric(vertical: 20.0),
           child: ClipOval( 
             child: Container( 
               color: Colors.orange.shade400,
@@ -399,22 +446,22 @@ class _AnalisysPageState extends State<AnalisysPage> {
       _setButtonCargarImagenStatus(false);
       _setLoading(true);
 
-      String resp = await analisiProvider.subirImagen(foto);
+      String resp = await analisisProv.subirImagen(foto);
 
 
       if (resp != null) {
 
-        enfermedad = await analisiProvider.detectarEnfermedad(resp);
+        enfermedad = await analisisProv.detectarEnfermedad(resp);
 
-        var objEnfermedad = enfermedad[0]['name'];
+        // var objEnfermedad = enfermedad[0]['name'];
 
-        sintomas = await analisiProvider.consultarSintomas(objEnfermedad);
-        print(sintomas);
+        // sintomas = await analisisProv.consultarSintomas(objEnfermedad);
+        // print(sintomas);
 
-        var now = DateTime.now();
+        // var now = DateTime.now();
 
-        statusInsert = await analisiProvider.insertarHistorial(prefs.email, resp, objEnfermedad, 'Media', '${now.day}/ ${now.month}/ ${now.year}', 10.2, 'Guatemala, City');
-        print(sintomas);
+        // statusInsert = await analisiProvider.insertarHistorial(prefs.email, resp, objEnfermedad, 'Media', '${now.day}/ ${now.month}/ ${now.year}', 10.2, 'Guatemala, City');
+        // print(sintomas);
 
       //set variables de control
        _setLoading(false);
