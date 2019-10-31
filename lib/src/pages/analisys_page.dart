@@ -15,6 +15,7 @@ class AnalisysPage extends StatefulWidget {
 }
 
 class _AnalisysPageState extends State<AnalisysPage> {
+  
   File foto;
   String status = '';
   bool _isLoading = false;
@@ -25,9 +26,14 @@ class _AnalisysPageState extends State<AnalisysPage> {
   bool _isStep2 = false;
   bool _isStep3 = false;
 
+  List<bool> selectedList = [false, false, false, false, false, false, false, false, false, false];
+
+
   var enfermedad;
   var sintomas;
   var statusInsert;
+
+
 
   AnalasisProvider analisisProv = AnalasisProvider();
 
@@ -193,9 +199,9 @@ class _AnalisysPageState extends State<AnalisysPage> {
                     Text(snapshot.data[i]),
                     Checkbox( 
                       onChanged: (bool value){
-
+                        _setStatusList(value, i);
                       },
-                      value: false,
+                      value: selectedList[i],
                     )
                   ],
                 ),
@@ -204,23 +210,15 @@ class _AnalisysPageState extends State<AnalisysPage> {
           );
 
         } else {
-          return Center( 
-            child: Column( 
+          return Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Image( 
-                  image: AssetImage('assets/nofound.png'),
-                ),
-                SizedBox(height: 20.0,),
-                Text(
-                  '!Ups ha ocurrido un problema',
-                   style: TextStyle( 
-                     color: Color.fromRGBO(63, 66, 66, 0.8),
-                   ),
-                )
-              ],
-            )
+              children: <Widget>[CircularProgressIndicator()],
+              )
+            ],
           );
         }
       },
@@ -453,11 +451,6 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
         enfermedad = await analisisProv.detectarEnfermedad(resp);
 
-        // var objEnfermedad = enfermedad[0]['name'];
-
-        // sintomas = await analisisProv.consultarSintomas(objEnfermedad);
-        // print(sintomas);
-
         // var now = DateTime.now();
 
         // statusInsert = await analisiProvider.insertarHistorial(prefs.email, resp, objEnfermedad, 'Media', '${now.day}/ ${now.month}/ ${now.year}', 10.2, 'Guatemala, City');
@@ -535,6 +528,13 @@ class _AnalisysPageState extends State<AnalisysPage> {
   _setStep3(bool status) {
     setState(() {
       _isStep3 = status;
+    });
+  }
+
+  //CAMBIA EL ESTADO PASO 2
+  _setStatusList(bool status, index) {
+    setState(() {
+      selectedList[index] = status; 
     });
   }
 
