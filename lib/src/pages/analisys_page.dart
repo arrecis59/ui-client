@@ -64,12 +64,11 @@ class _AnalisysPageState extends State<AnalisysPage> {
           ],
         ),
         body: Stack(
-          children: <Widget>[
-            _isStep2 ? _paso2() : Container(),
-            _determinarVista(),
-            _crearLoading()
+            children: <Widget>[
+              _determinarVista()
             ],
-        ));
+        )
+      );
   }
 
 
@@ -90,6 +89,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   //VISTA PANTALLA 1
   Widget _vistaPaso1() {
+
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -109,9 +109,14 @@ class _AnalisysPageState extends State<AnalisysPage> {
                       offset: Offset(0, 10)
                   )
                 ]),
-                child: _mostrarImagen()
+                child: Stack( 
+                  children: <Widget>[
+                    _mostrarImagen(),
+                    _crearLoading()
+                  ],
+                )
             ),
-            _botonCargarImagen()
+            _botonCargarImagen(),
           ],
         ),
       ),
@@ -160,10 +165,16 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   //VISTA PANTALLA 2
   Widget _vistaPaso2() {
-    return Container(
-      margin: EdgeInsets.only(top: 60.0),
-      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-      child: _crearCheckBox(),
+    return Column( 
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+       _paso2(),
+       Expanded(
+         child: _crearCheckBox(),
+       ),
+       _botonEnviarSintomas()
+      ],
     );
   }
 
@@ -182,8 +193,8 @@ class _AnalisysPageState extends State<AnalisysPage> {
             itemBuilder: (context, i){
               return Container(
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(top: 14.0, bottom: 4.0, left: 5.0, right: 5.0),
-                margin: EdgeInsets.symmetric(vertical: 10.0),
+                margin: EdgeInsets.only(top: 20.0),
+                padding: EdgeInsets.only(top: 12.0),
                 decoration: BoxDecoration( 
                   color: Colors.white,
                   boxShadow: [
@@ -335,6 +346,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
   Widget _mostrarImagen() {
     if (foto != null) {
       return Container(
+        alignment: Alignment.center,
         child: Image.file(
           File(foto.path),
           height: 300.0,
@@ -374,20 +386,23 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   //BOTON INICIAR ANALISIS
   Widget _botonEnviarSintomas(){
-    return FlatButton( 
-      color: Colors.blue.shade300,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0)
-      ),
-      child: Text(
-        'Continuar',
-        style: TextStyle( 
-          color: _isEnableEnviarSintomas ? Colors.white : Colors.grey,
-          fontSize: 16.0,
-          fontWeight: FontWeight.w300
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 40.0),
+      child: FlatButton( 
+        color: Colors.blue.shade300,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0)
         ),
+        child: Text(
+          'Continuar',
+          style: TextStyle( 
+            color: _isEnableEnviarSintomas ? Colors.white : Colors.grey,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w300
+          ),
+        ),
+        onPressed: _isEnableEnviarSintomas ? _enviarSintomas : null,
       ),
-      onPressed: _isEnableEnviarSintomas ? _enviarSintomas : null,
     );
   }
 
@@ -415,6 +430,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
       return Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -499,43 +515,55 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   //HABILITA O DESHABILITA EL BOTON CARGAR IMAGEN
   _setButtonCargarImagenStatus(bool status){
-    setState(() {
-      _isEnableCargarImagen = status;
-    });
+    if(this.mounted){
+      setState(() {
+        _isEnableCargarImagen = status;
+      });
+    }
   }
 
   //HABILITA O DESHABILITA EL LOADING
   _setLoading(bool status) {
-    setState(() {
-      _isLoading = status;
-    });
+    if(this.mounted){
+      setState(() {
+        _isLoading = status;
+      });
+    }
   }
 
   //CAMBIA EL ESTADO PASO 2
   _setStep2(bool status) {
-    setState(() {
-      _isStep2 = status;
-    });
+    if(this.mounted){
+      setState(() {
+        _isStep2 = status;
+      });
+    }
   }
   //CAMBIA EL ESTADO PASO 2
   _setStep1(bool status) {
-    setState(() {
-      _isStep1 = status;
-    });
+    if(this.mounted){
+      setState(() {
+        _isStep1 = status;
+      });
+    }
   }
 
   //CAMBIA EL ESTADO PASO 2
   _setStep3(bool status) {
-    setState(() {
-      _isStep3 = status;
-    });
+    if(this.mounted){
+      setState(() {
+        _isStep3 = status;
+      });
+    }
   }
 
   //CAMBIA EL ESTADO PASO 2
   _setStatusList(bool status, index) {
-    setState(() {
-      selectedList[index] = status; 
-    });
+    if(this.mounted){
+      setState(() {
+        selectedList[index] = status; 
+      });
+    }
   }
 
 }
