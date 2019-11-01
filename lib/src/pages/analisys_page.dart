@@ -109,7 +109,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
                       offset: Offset(0, 10)
                   )
                 ]),
-                child: Stack(
+                child: Stack( 
                   children: <Widget>[
                     _mostrarImagen(),
                     _crearLoading()
@@ -346,6 +346,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
   Widget _mostrarImagen() {
     if (foto != null) {
       return Container(
+        alignment: Alignment.center,
         child: Image.file(
           File(foto.path),
           height: 300.0,
@@ -514,43 +515,55 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   //HABILITA O DESHABILITA EL BOTON CARGAR IMAGEN
   _setButtonCargarImagenStatus(bool status){
-    setState(() {
-      _isEnableCargarImagen = status;
-    });
+    if(this.mounted){
+      setState(() {
+        _isEnableCargarImagen = status;
+      });
+    }
   }
 
   //HABILITA O DESHABILITA EL LOADING
   _setLoading(bool status) {
-    setState(() {
-      _isLoading = status;
-    });
+    if(this.mounted){
+      setState(() {
+        _isLoading = status;
+      });
+    }
   }
 
   //CAMBIA EL ESTADO PASO 2
   _setStep2(bool status) {
-    setState(() {
-      _isStep2 = status;
-    });
+    if(this.mounted){
+      setState(() {
+        _isStep2 = status;
+      });
+    }
   }
   //CAMBIA EL ESTADO PASO 2
   _setStep1(bool status) {
-    setState(() {
-      _isStep1 = status;
-    });
+    if(this.mounted){
+      setState(() {
+        _isStep1 = status;
+      });
+    }
   }
 
   //CAMBIA EL ESTADO PASO 2
   _setStep3(bool status) {
-    setState(() {
-      _isStep3 = status;
-    });
+    if(this.mounted){
+      setState(() {
+        _isStep3 = status;
+      });
+    }
   }
 
   //CAMBIA EL ESTADO PASO 2
   _setStatusList(bool status, index) {
-    setState(() {
-      selectedList[index] = status; 
-    });
+    if(this.mounted){
+      setState(() {
+        selectedList[index] = status; 
+      });
+    }
   }
 
 }
