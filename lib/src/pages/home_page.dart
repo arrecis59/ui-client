@@ -104,27 +104,28 @@ class _HomePageState extends State<HomePage> {
 
   Widget cambiarPage(){
 
-    Widget pagina;
+    
 
     switch(selectedIndex){
       
       case 0:
-        pagina = MainPage();
+        return MainPage();
       break;
 
       case 1:
-        pagina =  AnalisysPage();
+        return   AnalisysPage();
       break;
 
       case 2:
-        pagina =  HistoryPage();
+        return  HistoryPage();
       break;
       
       case 3:
-        pagina =  AccountPage();
+        return AccountPage();
       break;
     }
-    return pagina;
+    
+    return Container();
 
   }
 
