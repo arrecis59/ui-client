@@ -235,7 +235,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                       SizedBox(height: 15.0,),
                       Text(
-                      tinea,
+                      pitiriasis,
                       textAlign: TextAlign.justify,
                         style: TextStyle( 
                           fontSize: 15.0,
