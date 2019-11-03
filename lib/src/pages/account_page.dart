@@ -19,7 +19,7 @@ class _AccountPageState extends State<AccountPage> {
           'Información de la cuenta',
           style: TextStyle(fontSize: 15.0, color: Colors.white),
         ),
-        backgroundColor: Color.fromRGBO(59, 75, 89, 0.7),
+        backgroundColor: Color.fromRGBO(84, 143, 204, 0.8),
       ),
       body: Stack(
         children: <Widget>[_vistaAccount()],
@@ -61,7 +61,7 @@ class _AccountPageState extends State<AccountPage> {
               Icon(
                 Icons.account_circle,
                 size: 100.0,
-                color: Color.fromRGBO(59, 75, 89, 0.7),
+                color: Color.fromRGBO(59, 75, 89, 0.8),
               ),
               SizedBox(
                 height: 15.0,
@@ -103,7 +103,7 @@ class _AccountPageState extends State<AccountPage> {
         onPressed: (){
           Navigator.pushReplacementNamed(context, '/');
         },
-        color: Color.fromRGBO(59, 75, 89, 0.7),
+        color: Color.fromRGBO(84, 143, 204, 0.7),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.0)
           ),
