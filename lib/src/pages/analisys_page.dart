@@ -153,7 +153,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
         Container( 
           margin: EdgeInsets.only(left: 10.0),
           child: Text(
-          ' Seleccionar o tomar de fotografía.',
+          ' Seleccionar o tomar fotografía.',
             style: TextStyle( 
               color: Color.fromRGBO(63, 66, 66, 0.8),
               fontSize: 16,
