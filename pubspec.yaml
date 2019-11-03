@@ -28,6 +28,7 @@ dependencies:
   image_picker:
   shared_preferences:
   mime_type:
+  url_launcher:
 
 dev_dependencies:
   flutter_test:
