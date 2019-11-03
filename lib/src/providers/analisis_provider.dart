@@ -147,7 +147,7 @@ class AnalasisProvider {
     final decodeData  = json.decode(resp.body);
 
     //retorna status de la operacion
-    return decodeData['status'];
+    return decodeData;
 
   }
 

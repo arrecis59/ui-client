@@ -27,11 +27,15 @@ class _AnalisysPageState extends State<AnalisysPage> {
   bool _isStep3 = false;
 
   List<bool> selectedList = [false, false, false, false, false, false, false, false, false, false];
+  String msgAnalisis = 'Conforme al análisis realizado, se ha determinado la enfermedad cutánea con mayor probabilidad de padecer'+
+  ', tomando en cuenta signos y síntomas.';
+
+  String msgPrevencion = 'Por favor, visite nuestra sección de información importante, para contactar con un especialista.';
 
 
   var enfermedad;
   var sintomas;
-  var statusInsert;
+  var urlImg;
 
 
 
@@ -275,70 +279,225 @@ class _AnalisysPageState extends State<AnalisysPage> {
     );
   }
 
-  //VISTA PANTALLA 3
-  Widget _vistaPaso3() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
+
+  Widget _vistaPaso3(){
+        return Container( 
       height: MediaQuery.of(context).size.height,
-      padding: EdgeInsets.all(10.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 10.0,),
-            _paso3(),
-            Container(
-                margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                  BoxShadow(
-                      color: Color.fromRGBO(185, 194, 194, 0.56),
-                      blurRadius: 20.0,
-                      offset: Offset(0, 10)
-                  )
-                ]),
-                child: Text('Poner aquí resultado análisis')
-            ),
-          ],
+      child: SingleChildScrollView( 
+        child: Center( 
+          child: Column(
+            children: <Widget>[
+              _paso3(),
+              _card1(),
+              _card2(),
+              _card3(),
+            ],
+          ),
         ),
       ),
     );
   }
+ 
+   Widget _card1(){
+    return Container( 
+              
+              width: MediaQuery.of(context).size.width / 1.2,
+              padding: EdgeInsets.all(30.0),
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              decoration: BoxDecoration( 
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow( 
+                    color: Color.fromRGBO(185, 194, 194, 0.56),
+                    blurRadius: 20.0,
+                    offset: Offset(0, 10.0)
+                  )
+                ]
+              ),
+              child: Column( 
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center, 
+                        children: <Widget>[
+                          Padding( 
+                            padding: EdgeInsets.only(right: 5.0),
+                            child: Icon(Icons.check_circle, color: Colors.teal.shade300,),
+                          ),
+                          Text(
+                          'Análisis finalizado',
+                          textAlign: TextAlign.center,
+                            style: TextStyle( 
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w500
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 15.0,),
+                      Text(
+                      msgAnalisis,
+                      textAlign: TextAlign.justify,
+                        style: TextStyle( 
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w300,
+                          color: Color.fromRGBO(63, 66, 66, 0.6),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+      );
+  }
+
+   Widget _card2(){
+    return Container( 
+              
+              width: MediaQuery.of(context).size.width / 1.2,
+              padding: EdgeInsets.all(30.0),
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              decoration: BoxDecoration( 
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow( 
+                    color: Color.fromRGBO(185, 194, 194, 0.56),
+                    blurRadius: 20.0,
+                    offset: Offset(0, 10.0)
+                  )
+                ]
+              ),
+              child: Column( 
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center, 
+                        children: <Widget>[
+                          Padding( 
+                            padding: EdgeInsets.only(right: 5.0),
+                            child: Icon(Icons.insert_chart, color: Colors.blue.shade300,),
+                          ),
+                          Text(
+                          'Enfermedad detectada',
+                          textAlign: TextAlign.center,
+                            style: TextStyle( 
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w500
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 15.0,),
+                      Text(
+                      enfermedad[0]['name'],
+                      textAlign: TextAlign.justify,
+                        style: TextStyle( 
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w300,
+                          color: Color.fromRGBO(63, 66, 66, 0.6),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+      );
+  }
+
+   Widget _card3(){
+    return Container( 
+              
+              width: MediaQuery.of(context).size.width / 1.2,
+              padding: EdgeInsets.all(30.0),
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              decoration: BoxDecoration( 
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow( 
+                    color: Color.fromRGBO(185, 194, 194, 0.56),
+                    blurRadius: 20.0,
+                    offset: Offset(0, 10.0)
+                  )
+                ]
+              ),
+              child: Column( 
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center, 
+                        children: <Widget>[
+                          Padding( 
+                            padding: EdgeInsets.only(right: 5.0),
+                            child: Icon(Icons.info, color: Colors.red.shade300,),
+                          ),
+                          Text(
+                          'Prevención',
+                          textAlign: TextAlign.center,
+                            style: TextStyle( 
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w500
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 15.0,),
+                      Text(
+                      msgPrevencion,
+                      textAlign: TextAlign.justify,
+                        style: TextStyle( 
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w300,
+                          color: Color.fromRGBO(63, 66, 66, 0.6),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+      );
+  }
 
   //PASO 3
   Widget _paso3(){
-    return Row( 
-      children: <Widget>[
-        Container( 
-          margin: EdgeInsets.only(left: 20.0),
-          child: ClipOval( 
-            child: Container( 
-              color: Colors.orange.shade400,
-              width: 30.0,
-              height: 30.0,
-              child: Center( 
-                child: Text(
-                '3',
-                  style: TextStyle( 
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold
+    return Container(
+      margin: EdgeInsets.only(top: 20.0),
+      child: Row( 
+        children: <Widget>[
+          Container( 
+            margin: EdgeInsets.only(left: 20.0),
+            child: ClipOval( 
+              child: Container( 
+                color: Colors.orange.shade400,
+                width: 30.0,
+                height: 30.0,
+                child: Center( 
+                  child: Text(
+                  '3',
+                    style: TextStyle( 
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
-                ),
-              )
-            ),
-        ),
-        ),
-        Container( 
-          margin: EdgeInsets.only(left: 10.0),
-          child: Text(
-          ' Resultados del análisis.',
-            style: TextStyle( 
-              color: Color.fromRGBO(63, 66, 66, 0.8),
-              fontSize: 16,
-              fontWeight: FontWeight.w300
-            ),
+                )
+              ),
           ),
-        )
-      ],
+          ),
+          Container( 
+            margin: EdgeInsets.only(left: 10.0),
+            child: Text(
+            ' Resultado del análisis.',
+              style: TextStyle( 
+                color: Color.fromRGBO(63, 66, 66, 0.8),
+                fontSize: 16,
+                fontWeight: FontWeight.w300
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -449,7 +608,26 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
       _setStep1(false);
       _setStep2(false);
+
+      _setLoading(true);
+
+      var now = DateTime.now();
+
+      var resp = await analisisProv.insertarHistorial(prefs.email, urlImg, enfermedad[0]['name'],
+      'media','${now.day}/ ${now.month}/ ${now.year}', 10.2, 'Guatemala City');
+
+
+      if(resp != null){
+
       _setStep3(true);
+      _setLoading(false);
+
+      }else{
+        _setLoading(false);
+      } 
+
+
+
   }
 
   //SUBIR IMAGEN
@@ -464,6 +642,8 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
 
       if (resp != null) {
+
+        urlImg = resp;
 
         enfermedad = await analisisProv.detectarEnfermedad(resp);
 
