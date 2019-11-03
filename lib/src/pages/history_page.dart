@@ -16,7 +16,6 @@ class _HistoryPageState extends State<HistoryPage> {
   AnalasisProvider anProvider = AnalasisProvider();
   bool existeHistorial = false;
   int nElementos = 0;
-  Dog dog = Dog('', '', '');
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class _HistoryPageState extends State<HistoryPage> {
       appBar: AppBar(
         title: Text(
           'Historial de análisis',
-          style: TextStyle(fontSize: 17.0, color: Colors.white),
+          style: TextStyle(fontSize: 15.0, color: Colors.white),
         ),
         backgroundColor: Colors.deepOrange.shade300,
       ),
@@ -40,7 +39,10 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Widget _crearListado() {
 
+
     return FutureBuilder(
+
+      
 
       future: anProvider.consultarHistorial(prefs.email),
       builder: (BuildContext context, snapshot) {
@@ -151,7 +153,7 @@ class _HistoryPageState extends State<HistoryPage> {
               );
             },
           );
-        } else {
+        }
           return Center( 
             child: Column( 
               mainAxisAlignment: MainAxisAlignment.center,
@@ -162,7 +164,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 ),
                 SizedBox(height: 20.0,),
                 Text(
-                  'Aún no existe historial',
+                  'Aún no tienes historial',
                    style: TextStyle( 
                      color: Color.fromRGBO(63, 66, 66, 0.8),
                    ),
@@ -170,9 +172,12 @@ class _HistoryPageState extends State<HistoryPage> {
               ],
             )
           );
-        }
       },
     );
   }
+
+
+
+
 
 }
