@@ -22,6 +22,9 @@ class _MainPageState extends State<MainPage> {
   "la tinea negra produce un parche negro o marron en la piel, esta se puede confundir con decoloraciones de la piel, pero" +
   " en realidad es una afección benigna.";
 
+  String pitiriasis = "Esta enfermedad es causada por crecimiento de hongos en la piel. Suele afectar a adolecentes y adultos"+
+  " jovenes. Se presetan en la piel parches de colores más claros u oscuros que la piel que los rodea.";
+
   String urticaria = "Son ronchas rojizas que pueden producir picazón en la piel. Suele ser causada por una reacción alérgica a"+
   "la comida, medicamentos y otros agentes irritantes.";
 
