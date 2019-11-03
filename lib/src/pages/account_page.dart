@@ -17,7 +17,7 @@ class _AccountPageState extends State<AccountPage> {
       appBar: AppBar(
         title: Text(
           'Información de la cuenta',
-          style: TextStyle(fontSize: 17.0, color: Colors.white),
+          style: TextStyle(fontSize: 15.0, color: Colors.white),
         ),
         backgroundColor: Colors.teal.shade200,
       ),
