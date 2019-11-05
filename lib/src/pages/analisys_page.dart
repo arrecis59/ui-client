@@ -782,11 +782,6 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
         enfermedad = await analisisProv.detectarEnfermedad(resp);
 
-        // var now = DateTime.now();
-
-        // statusInsert = await analisiProvider.insertarHistorial(prefs.email, resp, objEnfermedad, 'Media', '${now.day}/ ${now.month}/ ${now.year}', 10.2, 'Guatemala, City');
-        // print(sintomas);
-
       //set variables de control
        _setLoading(false);
 
