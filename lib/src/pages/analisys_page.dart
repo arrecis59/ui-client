@@ -25,10 +25,16 @@ class _AnalisysPageState extends State<AnalisysPage> {
   bool _isStep1 = true;
   bool _isStep2 = false;
   bool _isStep3 = false;
+  bool _fallo1 = false;
 
-  List<bool> selectedList = [false, false, false, false, false, false, false, false, false, false];
+  int cantCheck = 0;
+
+  List<bool> selectedList = [];
   String msgAnalisis = 'Conforme al análisis realizado, se ha determinado la enfermedad cutánea con mayor probabilidad de padecer'+
   ', tomando en cuenta signos y síntomas.';
+  
+  String msgNoAnalisis = 'No se ha podido finalizar con el análisis debido a que el grado de efectividad no es mayor o igual al 70%'+
+  ', esto porque no presenta el mínimo de síntomas necesarios para el análisis.';
 
   String msgPrevencion = 'Por favor, visite nuestra sección de información importante, para contactar con un especialista.';
 
@@ -86,6 +92,8 @@ class _AnalisysPageState extends State<AnalisysPage> {
       vista = _vistaPaso2();
     }else if(_isStep3){
       vista = _vistaPaso3();
+    }else if(_fallo1){
+      vista = _vistaFallo1();
     }
 
     return vista;
@@ -195,6 +203,11 @@ class _AnalisysPageState extends State<AnalisysPage> {
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (context, i){
+
+              //Numero de checkbox
+              cantCheck = snapshot.data.length;
+              selectedList.add(false);
+
               return Container(
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.only(top: 20.0),
@@ -297,7 +310,79 @@ class _AnalisysPageState extends State<AnalisysPage> {
       ),
     );
   }
+
+
+  Widget _vistaFallo1(){
+        return Container( 
+      height: MediaQuery.of(context).size.height,
+      child: SingleChildScrollView( 
+        child: Center( 
+          child: Column(
+            children: <Widget>[
+              _paso3(),
+              _cardFallo1()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
  
+
+ Widget _cardFallo1(){
+    return Container( 
+              
+              width: MediaQuery.of(context).size.width / 1.2,
+              padding: EdgeInsets.all(30.0),
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              decoration: BoxDecoration( 
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow( 
+                    color: Color.fromRGBO(185, 194, 194, 0.56),
+                    blurRadius: 20.0,
+                    offset: Offset(0, 10.0)
+                  )
+                ]
+              ),
+              child: Column( 
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center, 
+                        children: <Widget>[
+                          Padding( 
+                            padding: EdgeInsets.only(right: 5.0),
+                            child: Icon(Icons.warning, color: Colors.red.shade300,),
+                          ),
+                          Text(
+                          'Análisis incompleto',
+                          textAlign: TextAlign.center,
+                            style: TextStyle( 
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w500
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 15.0,),
+                      Text(
+                      msgNoAnalisis,
+                      textAlign: TextAlign.justify,
+                        style: TextStyle( 
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w300,
+                          color: Color.fromRGBO(63, 66, 66, 0.6),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+      );
+  }
+
    Widget _card1(){
     return Container( 
               
@@ -351,6 +436,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
               ),
       );
   }
+
 
    Widget _card2(){
     return Container( 
@@ -611,22 +697,36 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
       _setLoading(true);
 
-      var now = DateTime.now();
+      //cantidad de sintomas presentados
+      double promSintomas = 0.0;
+      int selected = 0;
 
-      var resp = await analisisProv.insertarHistorial(prefs.email, urlImg, enfermedad[0]['name'],
-      'media','${now.day}/ ${now.month}/ ${now.year}', 10.2, 'Guatemala City');
-
-
-      if(resp != null){
-
-      _setStep3(true);
-      _setLoading(false);
-
-      }else{
-        _setLoading(false);
-      } 
+      selectedList.forEach( (n) => { if(n) selected = selected+1 } );
+      promSintomas = (selected * 100) / cantCheck;
 
 
+      //selecciono almenos un sintoma
+      if(promSintomas >= 33.33){
+
+          var now = DateTime.now();
+
+          var resp = await analisisProv.insertarHistorial(prefs.email, urlImg, enfermedad[0]['name'],
+          'media','${now.day}/ ${now.month}/ ${now.year}', 10.2, 'Guatemala City');
+
+
+          if(resp != null){
+
+          _setStep3(true);
+          _setLoading(false);
+
+          }else{
+            _setLoading(false);
+          } 
+
+      }else{ //no selecciono ningun sintoma
+
+        _setfallo1(true);
+      }
 
   }
 
@@ -733,6 +833,15 @@ class _AnalisysPageState extends State<AnalisysPage> {
     if(this.mounted){
       setState(() {
         _isStep3 = status;
+      });
+    }
+  }
+
+   //FALLO 1
+  _setfallo1(bool status) {
+    if(this.mounted){
+      setState(() {
+        _fallo1 = status;
       });
     }
   }
