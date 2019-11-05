@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_client/src/models/dog_model.dart';
 import 'package:ui_client/src/preferecias_usuario/preferencias_usuario.dart';
 import 'package:ui_client/src/providers/analisis_provider.dart';
 
@@ -39,10 +38,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Widget _crearListado() {
 
-
     return FutureBuilder(
-
-      
 
       future: anProvider.consultarHistorial(prefs.email),
       builder: (BuildContext context, snapshot) {

@@ -26,6 +26,8 @@ class _AnalisysPageState extends State<AnalisysPage> {
   bool _isStep2 = false;
   bool _isStep3 = false;
   bool _fallo1 = false;
+  bool _iscameraEnable = true;
+  bool _isGalleryEnable = true;
 
   int cantCheck = 0;
 
@@ -304,6 +306,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
               _card1(),
               _card2(),
               _card3(),
+              _botonRegresar()
             ],
           ),
         ),
@@ -320,7 +323,8 @@ class _AnalisysPageState extends State<AnalisysPage> {
           child: Column(
             children: <Widget>[
               _paso3(),
-              _cardFallo1()
+              _cardFallo1(),
+              _botonRegresar()
             ],
           ),
         ),
@@ -589,7 +593,11 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   //MOSTRAR IMAGEN
   Widget _mostrarImagen() {
+
+
+
     if (foto != null) {
+      
       return Container(
         alignment: Alignment.center,
         child: Image.file(
@@ -598,6 +606,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
           fit: BoxFit.cover,
         ),
       );
+
     } else {
       return Container(
         child: Image(
@@ -651,12 +660,34 @@ class _AnalisysPageState extends State<AnalisysPage> {
     );
   }
 
+  //BOTON REGRESAR
+  Widget _botonRegresar(){
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 40.0),
+      child: FlatButton( 
+        color: Colors.blue.shade300,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0)
+        ),
+        child: Text(
+          'Regresar',
+          style: TextStyle( 
+            color: _isEnableEnviarSintomas ? Colors.white : Colors.grey,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w300
+          ),
+        ),
+        onPressed: _regresarMenuAnalisis,
+      ),
+    );
+  }
+
   //BOTON TOMAR FOTOGRAFIA
   Widget _botonTomarFotografia() {
     return IconButton(
       icon: Icon(Icons.camera),
       color: Colors.white,
-      onPressed: _tomarImagen,
+      onPressed: _iscameraEnable ? _tomarImagen : null,
     );
   }
 
@@ -665,7 +696,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
     return IconButton(
       icon: Icon(Icons.photo_size_select_actual),
       color: Colors.white,
-      onPressed: _seleccionarImagen,
+      onPressed: _isGalleryEnable ? _seleccionarImagen: null,
     );
   }
 
@@ -708,6 +739,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
       //selecciono almenos un sintoma
       if(promSintomas >= 33.33){
 
+
           var now = DateTime.now();
 
           var resp = await analisisProv.insertarHistorial(prefs.email, urlImg, enfermedad[0]['name'],
@@ -732,6 +764,9 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   //SUBIR IMAGEN
   _subirImagen() async{
+
+    _iscameraEnable = false;
+    _isGalleryEnable = false;
 
      if (foto != null) {
       
@@ -781,6 +816,21 @@ class _AnalisysPageState extends State<AnalisysPage> {
     } else {
       setState(() {});
     }
+  }
+
+  //REGRESAR AL MENU DE ANALISIS
+  _regresarMenuAnalisis(){
+
+    selectedList.clear();
+    _setLoading(false);
+    foto = null;
+    _setStep1(true);
+    _setStep2(false);
+    _setStep3(false);
+    _setfallo1(false);
+
+    _iscameraEnable = true;
+    _isGalleryEnable = true;
   }
 
   //SELECCIONAR IMAGEN DESDE GALERIA
