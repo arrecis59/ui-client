@@ -9,6 +9,7 @@ class AnalasisProvider {
 
   final urlApi = 'https://app-enfermedades.herokuapp.com';
 
+  //SUBIR IMAGENES
   Future<String> subirImagen(File imagen) async {
     //URL endpoint
     final url = Uri.parse(
@@ -114,7 +115,7 @@ class AnalasisProvider {
 
   //INSERTAR HISTORIAL
   Future<dynamic> insertarHistorial(String _email, String _rutaImg, String _enfermedad, String _gravedad,
-                                    String _fecha, double _ejecucion, String _ubicacion) async{
+                                    String _fecha, String _hora, double _ejecucion, String _ubicacion) async{
 
     //URL api
     final url = '$urlApi/insertarHistorial';
@@ -127,6 +128,7 @@ class AnalasisProvider {
       'enfermedad': _enfermedad,
       'gravedad': _gravedad, 
       'fecha': _fecha, 
+      'hora': _hora,
       'ejecucion': _ejecucion,
       'ubicacion': _ubicacion 
     };
@@ -148,6 +150,28 @@ class AnalasisProvider {
 
     //retorna status de la operacion
     return decodeData;
+
+  }
+
+  //CONSULTAR GRAVEDAD DE ENFERMEDADA
+  Future<dynamic> consultarGravedad (String _enfermedad) async{
+
+    //URL api
+    final url = '$urlApi/consultarGravedad?enfermedad=$_enfermedad';
+    
+    final resp = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: "application/json"
+    });
+
+    if(resp.statusCode != 200){
+      print('algo salio mal');
+      return null;
+    }
+
+    final decodeData = json.decode(resp.body);
+
+    return decodeData;
+
 
   }
 

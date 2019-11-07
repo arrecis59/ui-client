@@ -1,7 +1,7 @@
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_client/src/preferecias_usuario/preferencias_usuario.dart';
 import 'package:ui_client/src/providers/analisis_provider.dart';
@@ -735,15 +735,20 @@ class _AnalisysPageState extends State<AnalisysPage> {
       selectedList.forEach( (n) => { if(n) selected = selected+1 } );
       promSintomas = (selected * 100) / cantCheck;
 
+      //Gravedad
+      var gravedad = await analisisProv.consultarGravedad(enfermedad[0]['name']);
 
       //selecciono almenos un sintoma
-      if(promSintomas >= 33.33){
+      if(promSintomas >= 33.33 && gravedad['status']){
 
 
           var now = DateTime.now();
+          DateFormat dateFormat = DateFormat("HH:mm");
+          String dateString = dateFormat.format(DateTime.now());
+          print(dateString);
 
           var resp = await analisisProv.insertarHistorial(prefs.email, urlImg, enfermedad[0]['name'],
-          'media','${now.day}/ ${now.month}/ ${now.year}', 10.2, 'Guatemala City');
+          gravedad['gravedad'],'${now.day}/ ${now.month}/ ${now.year}', 10.2, 'Guatemala City');
 
 
           if(resp != null){
