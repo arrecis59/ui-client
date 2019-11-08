@@ -65,11 +65,22 @@ class _HistoryPageState extends State<HistoryPage> {
                           snapshot.data[i]['fecha'],
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.w500),
+                              fontSize: 16.0, fontWeight: FontWeight.w500,
+                              color: Colors.grey.shade800
+                          ),
+                        ),
+                        SizedBox(height: 4.0,),
+                        Text(
+                          snapshot.data[i]['hora'] + ' Horas',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 13.0, fontWeight: FontWeight.w300,
+                              color: Color.fromRGBO(63, 66, 66, 0.8),
+                          ),
                         ),
                         
                         SizedBox(
-                          height: 15.0,
+                          height: 16.0,
                         ),
                         Row( 
                           mainAxisAlignment: MainAxisAlignment.center,
