@@ -748,7 +748,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
           print(dateString);
 
           var resp = await analisisProv.insertarHistorial(prefs.email, urlImg, enfermedad[0]['name'],
-          gravedad['gravedad'],'${now.day}/ ${now.month}/ ${now.year}', 10.2, 'Guatemala City');
+          gravedad['gravedad'],'${now.day}/ ${now.month}/ ${now.year}', dateString, 10.2, 'Guatemala City');
 
 
           if(resp != null){
