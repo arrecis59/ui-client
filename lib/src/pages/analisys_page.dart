@@ -36,7 +36,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
   ', tomando en cuenta signos y síntomas.';
   
   String msgNoAnalisis = 'No se ha podido finalizar con el análisis debido a que el grado de efectividad no es mayor o igual al 70%'+
-  ', esto porque no presenta el mínimo de síntomas necesarios para el análisis.';
+  ', esto surge cuando no presenta el mínimo de síntomas necesarios para el análisis.';
 
   String msgPrevencion = 'Por favor, visite nuestra sección de información importante, para contactar con un especialista.';
 
@@ -524,7 +524,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
                             child: Icon(Icons.info, color: Colors.red.shade300,),
                           ),
                           Text(
-                          'Prevención',
+                          'Sugerencia preventiva',
                           textAlign: TextAlign.center,
                             style: TextStyle( 
                               fontSize: 15.0,
@@ -732,8 +732,16 @@ class _AnalisysPageState extends State<AnalisysPage> {
       double promSintomas = 0.0;
       int selected = 0;
 
-      selectedList.forEach( (n) => { if(n) selected = selected+1 } );
+      for(int i = 0; i < selectedList.length; i++){
+        if(selectedList[i]){
+          selected = selected + 1;
+        }
+      }
+
       promSintomas = (selected * 100) / cantCheck;
+
+      // selectedList.forEach( (n) => { if(n) selected = selected+1 } );
+      // promSintomas = (selected * 100) / cantCheck;
 
       //Gravedad
       var gravedad = await analisisProv.consultarGravedad(enfermedad[0]['name']);

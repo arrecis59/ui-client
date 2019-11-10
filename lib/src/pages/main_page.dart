@@ -60,7 +60,7 @@ class _MainPageState extends State<MainPage> {
  _getLocation() async{
 
   final ubicacicaion = await locProv.obtenerUbicacion();
-  print(ubicacicaion);
+  //print(ubicacicaion);
 
   }
 
