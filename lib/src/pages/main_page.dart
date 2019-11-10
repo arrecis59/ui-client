@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_client/src/providers/location_provider.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class MainPage extends StatefulWidget {
@@ -9,6 +10,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+  LocationProvider locProv = LocationProvider();
 
   String xatoma = "Son protuberancias firmes que puede ser color rosa o amarrillo que pueden aparecer en los brasos, tronco o piernas" +
   ". La presencia de esta lesión puede ser asociada a niveles anormales de lipidos o grasas en la sangre";
@@ -28,8 +31,13 @@ class _MainPageState extends State<MainPage> {
   String urticaria = "Son ronchas rojizas que pueden producir picazón en la piel. Suele ser causada por una reacción alérgica a"+
   "la comida, medicamentos y otros agentes irritantes.";
 
+
+
   @override
   Widget build(BuildContext context) {
+
+    _getLocation();
+
     return Scaffold( 
       appBar: AppBar( 
         title: Text( 
@@ -47,6 +55,13 @@ class _MainPageState extends State<MainPage> {
         ],
       ),
     );
+  }
+
+ _getLocation() async{
+
+  final ubicacicaion = await locProv.obtenerUbicacion();
+  print(ubicacicaion);
+
   }
 
   Widget _vistaNoticias(){

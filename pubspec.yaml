@@ -30,6 +30,8 @@ dependencies:
   mime_type:
   url_launcher:
   intl:
+  geolocator:
+  location:
 
 dev_dependencies:
   flutter_test:
