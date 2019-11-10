@@ -115,7 +115,7 @@ class AnalasisProvider {
 
   //INSERTAR HISTORIAL
   Future<dynamic> insertarHistorial(String _email, String _rutaImg, String _enfermedad, String _gravedad,
-                                    String _fecha, String _hora, double _ejecucion, String _ubicacion) async{
+                                    String _fecha, String _hora, double _ejecucion, var _ubicacion) async{
 
     //URL api
     final url = '$urlApi/insertarHistorial';

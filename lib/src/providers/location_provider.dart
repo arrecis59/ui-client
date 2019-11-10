@@ -5,7 +5,7 @@ class LocationProvider{
   Future<dynamic> obtenerUbicacion() async{
 
     var position;
-    var address = {"zona": "", "municipio": "", "pais": "Guatemala", "direccion": "Ciudad de Guatemala, Guatemala" };
+    var address = {"zona": "", "municipio": "", "pais": "", "direccion": "no especificada"};
     Geolocator geolocator = Geolocator();
     GeolocationStatus status  = await geolocator.checkGeolocationPermissionStatus();
 
@@ -28,9 +28,9 @@ class LocationProvider{
       }
 
      }
-
     } catch (e) {
-      address = null;
+      print(e);
+      address = {"zona": "", "municipio": "", "pais": "", "direccion": "no especificada"};
     }
 
     return address;

@@ -1,10 +1,10 @@
-
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_client/src/preferecias_usuario/preferencias_usuario.dart';
 import 'package:ui_client/src/providers/analisis_provider.dart';
+import 'package:ui_client/src/providers/location_provider.dart';
 import 'package:ui_client/src/utils/utils.dart';
 
 class AnalisysPage extends StatefulWidget {
@@ -18,6 +18,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
   
   File foto;
   String status = '';
+  var ubicacion;
   bool _isLoading = false;
   bool _isEnableCargarImagen = false; //boton analisis
   bool _isEnableEnviarSintomas = true; //boton analisis
@@ -48,6 +49,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
 
   AnalasisProvider analisisProv = AnalasisProvider();
+  LocationProvider locProv = LocationProvider();
 
   final prefs = new PreferenciasUsuario();
 
@@ -103,6 +105,8 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
   //VISTA PANTALLA 1
   Widget _vistaPaso1() {
+
+    _obtenerUbicacion();
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -737,11 +741,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
           selected = selected + 1;
         }
       }
-
       promSintomas = (selected * 100) / cantCheck;
-
-      // selectedList.forEach( (n) => { if(n) selected = selected+1 } );
-      // promSintomas = (selected * 100) / cantCheck;
 
       //Gravedad
       var gravedad = await analisisProv.consultarGravedad(enfermedad[0]['name']);
@@ -753,10 +753,10 @@ class _AnalisysPageState extends State<AnalisysPage> {
           var now = DateTime.now();
           DateFormat dateFormat = DateFormat("HH:mm");
           String dateString = dateFormat.format(DateTime.now());
-          print(dateString);
+          print(ubicacion);
 
           var resp = await analisisProv.insertarHistorial(prefs.email, urlImg, enfermedad[0]['name'],
-          gravedad['gravedad'],'${now.day}/ ${now.month}/ ${now.year}', dateString, 10.2, 'Guatemala City');
+          gravedad['gravedad'],'${now.day}/ ${now.month}/ ${now.year}', dateString, 10.2, ubicacion);
 
 
           if(resp != null){
@@ -811,6 +811,11 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
     }
 
+  }
+
+  _obtenerUbicacion() async{
+    ubicacion = await locProv.obtenerUbicacion();
+    //print(ubiacacion);
   }
 
   //LLENA LA VARIABLE FOTO CON EL SOURCE
