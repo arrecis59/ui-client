@@ -19,7 +19,7 @@ class _BiPageState extends State<BiPage> {
           fontSize: 15.0
         ),
         ),
-        backgroundColor: Color.fromRGBO(247, 198, 106, 0.9),
+        backgroundColor: Color.fromRGBO(255, 136, 117, 0.8),
       ),
       body: Center( 
         child: Text('Hola'),
