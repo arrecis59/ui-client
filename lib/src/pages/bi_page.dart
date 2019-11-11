@@ -12,7 +12,14 @@ class _BiPageState extends State<BiPage> {
   Widget build(BuildContext context) {
     return Scaffold( 
       appBar: AppBar( 
-        title: Text('Inteligencía de negocios'),
+        title: Text(
+        'Inteligencía de negocios',
+        style: TextStyle( 
+          color: Colors.white,
+          fontSize: 15.0
+        ),
+        ),
+        backgroundColor: Color.fromRGBO(247, 198, 106, 0.9),
       ),
       body: Center( 
         child: Text('Hola'),
