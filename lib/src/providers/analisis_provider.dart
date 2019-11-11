@@ -60,8 +60,9 @@ class AnalasisProvider {
     final respData = json.decode(resp.body);
 
     //retorno de enfermedad si no hay errores
-    return respData['enfermedad']; 
+    return respData; 
   }
+
 
   //CONSULTAR SINTOMAS
   Future<dynamic> consultarSintomas(String _enfermedad) async{

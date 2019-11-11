@@ -43,6 +43,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
 
   var enfermedad;
+  var tiempoEjecucion;
   var sintomas;
   var urlImg;
 
@@ -756,7 +757,7 @@ class _AnalisysPageState extends State<AnalisysPage> {
           print(ubicacion);
 
           var resp = await analisisProv.insertarHistorial(prefs.email, urlImg, enfermedad[0]['name'],
-          gravedad['gravedad'],'${now.day}/ ${now.month}/ ${now.year}', dateString, 10.2, ubicacion);
+          gravedad['gravedad'],'${now.day}/ ${now.month}/ ${now.year}', dateString, tiempoEjecucion, ubicacion);
 
 
           if(resp != null){
@@ -793,19 +794,28 @@ class _AnalisysPageState extends State<AnalisysPage> {
 
         urlImg = resp;
 
-        enfermedad = await analisisProv.detectarEnfermedad(resp);
+        var respEnfermedad = await analisisProv.detectarEnfermedad(resp);
 
-      //set variables de control
-       _setLoading(false);
+        enfermedad = respEnfermedad['enfermedad'];
+        tiempoEjecucion = respEnfermedad['time'];
 
-      //set paso 2 activado
-      _setStep1(false);
-      _setStep2(true);
+        if(respEnfermedad != null){
+          //set variables de control
+          _setLoading(false);
+
+          //set paso 2 activado
+          _setStep1(false);
+          _setStep2(true);
+        }else{
+          _setLoading(false);
+          mostrarAlerta(context, 'Error al detectar enfermedad', 'Error');
+          setState(() {});
+        }
 
 
       }else{
         _setLoading(false);
-        mostrarAlerta(context, 'Error al cargar fotografía intentelo nuevamente', 'Info');
+        mostrarAlerta(context, 'Error al cargar fotografía intentelo nuevamente', 'Error');
         setState(() {});
       }
 
