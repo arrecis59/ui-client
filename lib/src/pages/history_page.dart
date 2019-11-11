@@ -130,29 +130,26 @@ class _HistoryPageState extends State<HistoryPage> {
                           ],
                         ),
                         SizedBox(height: 8.0,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Column( 
                           children: <Widget>[
                             Text(
                               'Ubicación: ',
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
+                              style: TextStyle( 
                                 color: Color.fromRGBO(63, 66, 66, 0.8),
                               ),
                             ),
+                            SizedBox(height: 10.0,),
                             Text(
                               snapshot.data[i]['ubicacion'],
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(
+                              textAlign: TextAlign.center,
+                              style: TextStyle( 
                                 fontSize: 14.0,
                                 fontWeight: FontWeight.w400,
                                 color: Color.fromRGBO(63, 66, 66, 0.6),
                               ),
                             ),
                           ],
-                        ),
+                        )
                       ],
                     )
                   ],
