@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_client/src/pages/account_page.dart';
 import 'package:ui_client/src/pages/analisys_page.dart';
+import 'package:ui_client/src/pages/bi_page.dart';
 import 'package:ui_client/src/pages/history_page.dart';
 import 'package:ui_client/src/pages/main_page.dart';
 
@@ -119,6 +120,10 @@ class _HomePageState extends State<HomePage> {
 
       case 2:
         return  HistoryPage();
+      break;
+
+      case 2:
+        return  BiPage();
       break;
       
       case 4:
