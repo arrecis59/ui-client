@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     NavigationItem(Icon(Icons.insert_chart), Text('Análisis'), Colors.blue.shade300,),
     NavigationItem(Icon(Icons.history), Text('Historial'), Colors.deepOrange.shade300),
     NavigationItem(Icon(Icons.pie_chart), Text('BI'), Color.fromRGBO(255, 111, 112, 1)),
-    NavigationItem(Icon(Icons.person_outline), Text('Cuenta'),Color.fromRGBO(84, 143, 204, 0.8),),
+    NavigationItem(Icon(Icons.person_outline), Text('Cuenta'),Color.fromRGBO(69, 204, 184, 0.7),),
   ];
 
   @override
