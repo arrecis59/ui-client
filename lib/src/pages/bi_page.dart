@@ -267,7 +267,7 @@ class _BiPageState extends State<BiPage> {
                           height: 15.0,
                         ),
                         Text(
-                          'Según los 5 tipos de enfermedad comparados con los análisis realizados',
+                          'Porcentaje de enfermedades según historial',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 15.0,
@@ -360,7 +360,7 @@ class _BiPageState extends State<BiPage> {
                           height: 15.0,
                         ),
                         Text(
-                          'Redimiento del algoritmo al detectar una efermedad',
+                          'Redimiento del algoritmo por mes al detectar una efermedades',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 15.0,
