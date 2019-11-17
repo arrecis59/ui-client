@@ -1,3 +1,5 @@
+import 'dart:developer';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:ui_client/src/providers/metricas_provider.dart';
@@ -430,37 +432,168 @@ class _BiPageState extends State<BiPage> {
 
   
   _setDataScatter(var snapShot) {
+    
+    List<Rendimiento> scatterData = [];
 
-    var scatterData = [
-      new Rendimiento(0, 0, 3.0),
-      new Rendimiento(1, 0, 3.0),
-      new Rendimiento(2, 0, 3.0),
-      new Rendimiento(3, 0, 3.0),
-      new Rendimiento(4, 0, 3.0),
-      new Rendimiento(5, 0, 3.0),
-      new Rendimiento(6, 0, 3.0),
-      new Rendimiento(7, 0, 3.0),
-      new Rendimiento(8, 0, 3.0),
-      new Rendimiento(9, 0, 3.0),
-      new Rendimiento(10, 0, 3.0),
-      new Rendimiento(11, 0.894, 3.0),
-      new Rendimiento(11, 1.296, 3.0),
-      new Rendimiento(11, 1.916, 3.0),
-      new Rendimiento(12, 0, 3.0),
+    var enero = snapShot['enero'];
+    var febrero = snapShot['febrero'];
+    var marzo = snapShot['marzo'];
+    var abril = snapShot['abril'];
+    var mayo = snapShot['mayo'];
+    var junio = snapShot['junio'];
+    var julio = snapShot['julio'];
+    var agosto = snapShot['agosto'];
+    var septiembre = snapShot['septiembre'];
+    var octubre = snapShot['octubre'];
+    var noviembre = snapShot['noviembre'];
+    var diciembre = snapShot['diciembre'];
+    
+    //ENERO
+    if(enero.length > 0){
       
-    ];
+      for(int i = 0; i < enero.length; i++){
+        scatterData.add(Rendimiento(0, double.parse(enero[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(0, 0.0, 3.0));
+    }
+
+    //FEBRERO
+    if(febrero.length > 0){
+      
+      for(int i = 0; i < febrero.length; i++){
+        scatterData.add(Rendimiento(1, double.parse(febrero[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(1, 0.0, 3.0));
+    }
+
+    //MARZO
+    if(marzo.length > 0){
+      
+      for(int i = 0; i < marzo.length; i++){
+        scatterData.add(Rendimiento(2, double.parse(marzo[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(2, 0.0, 3.0));
+    }
+
+    //ABRIL
+    if(abril.length > 0){
+      
+      for(int i = 0; i < abril.length; i++){
+        scatterData.add(Rendimiento(3, double.parse(abril[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(3, 0.0, 3.0));
+    }
+
+    //MAYO
+    if(mayo.length > 0){
+      
+      for(int i = 0; i < mayo.length; i++){
+        scatterData.add(Rendimiento(4, double.parse(mayo[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(4, 0.0, 3.0));
+    }
+
+    //JUNIO
+    if(junio.length > 0){
+      
+      for(int i = 0; i < junio.length; i++){
+        scatterData.add(Rendimiento(5, double.parse(junio[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(5, 0.0, 3.0));
+    }
+
+    //JULIO
+    if(julio.length > 0){
+      
+      for(int i = 0; i < julio.length; i++){
+        scatterData.add(Rendimiento(6, double.parse(julio[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(6, 0.0, 3.0));
+    }
+
+    //AGOSTO
+    if(agosto.length > 0){
+      
+      for(int i = 0; i < agosto.length; i++){
+        scatterData.add(Rendimiento(7, double.parse(agosto[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(7, 0.0, 3.0));
+    }
+
+    //SEPTIEMBRE
+    if(septiembre.length > 0){
+      
+      for(int i = 0; i < septiembre.length; i++){
+        scatterData.add(Rendimiento(8, double.parse(septiembre[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(8, 0.0, 3.0));
+    }
+
+    //OCTUBRE
+    if(octubre.length > 0){
+      
+      for(int i = 0; i < octubre.length; i++){
+        scatterData.add(Rendimiento(9, double.parse(octubre[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(9, 0.0, 3.0));
+    }
+
+    //NOVIEMBRE
+    
+    if(noviembre.length > 0){
+      
+      for(int i = 0; i < noviembre.length; i++){
+        scatterData.add(Rendimiento(10, double.parse(noviembre[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(10, 0.0, 3.0));
+    }
+
+    //DICIEMBRE
+    
+    if(diciembre.length > 0){
+      
+      for(int i = 0; i < diciembre.length; i++){
+        scatterData.add(Rendimiento(11, double.parse(diciembre[i].toString()) , 3.0));
+      }
+
+    }else{
+      scatterData.add(Rendimiento(11, 0.0, 3.0));
+    }
+
 
     _seriesScatterData.add(charts.Series(
 
         data: scatterData,
-        colorFn: (Rendimiento sales, _) {
+        colorFn: (Rendimiento ren, _) {
           // Bucket the measure column value into 3 distinct colors.
           return charts.MaterialPalette.blue.shadeDefault;
         },
-       domainFn: (Rendimiento sales, _) => sales.mes,
-       measureFn: (Rendimiento sales, _) => sales.valor,
+       domainFn: (Rendimiento ren, _) => ren.mes,
+       measureFn: (Rendimiento ren, _) => ren.valor,
       // Providing a radius function is optional.
-       radiusPxFn: (Rendimiento sales, _) => sales.radio,
+       radiusPxFn: (Rendimiento ren, _) => ren.radio,
       id: 'Daily task',
       )..setAttribute(charts.rendererIdKey, "customeLine")
     );
