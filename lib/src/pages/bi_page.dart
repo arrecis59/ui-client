@@ -174,7 +174,7 @@ class _BiPageState extends State<BiPage> {
               customSeriesRenderers: [
                 charts.LineRendererConfig( 
                   customRendererId: 'customeLine',
-                  layoutPaintOrder: charts.LayoutViewPaintOrder.point + 1
+                  layoutPaintOrder: charts.LayoutViewPaintOrder.point
                 )
               ],
              
