@@ -10,16 +10,21 @@ class BiPage extends StatefulWidget {
 }
 
 class _BiPageState extends State<BiPage> {
+
+
   List<charts.Series<Enfermedad, String>> _seriesPieData;
+  List<charts.Series<Ubicacion, int>> _seriesPointData;
   MetricasProvider metricProv = MetricasProvider();
 
   bool vistaInicial = true;
   bool vistaEnfermedades = false;
-  bool press = false;
+  bool vistaUbicacion = false;
 
   @override
   Widget build(BuildContext context) {
+
     _seriesPieData = List<charts.Series<Enfermedad, String>>();
+    _seriesPointData = List<charts.Series<Ubicacion, int>>();
 
     return Stack(
       children: <Widget>[
@@ -36,6 +41,8 @@ class _BiPageState extends State<BiPage> {
       vista = _vistaInicial();
     } else if (vistaEnfermedades) {
       vista = _pieChart();
+    }else if (vistaUbicacion) {
+      vista = _pointChart();
     }
 
     return vista;
@@ -90,10 +97,61 @@ class _BiPageState extends State<BiPage> {
     );
   }
 
+  Widget _pointChart() {
+
+    final customTickFormatter =
+    charts.BasicNumericTickFormatterSpec((num value) {
+      if (value == 0) {
+        return "Zona 1";
+      } else if (value == 1) {
+        return "Zona 2";
+      } else if (value == 2) {
+        return "Zona 5";
+      }
+
+    });
+
+    return FutureBuilder(
+      future: metricProv.obtenerMetricaUbicacion(),
+      builder: (BuildContext context, snapShot) {
+        if (snapShot.hasData) {
+
+          _setDataPoint(snapShot.data);
+          return Container(
+            padding: EdgeInsets.only(top: 130.0, bottom: 20.0, left: 10.0, right: 10.0),
+            child: charts.LineChart(
+              _seriesPointData,
+              animate: true,
+              animationDuration: Duration(milliseconds: 1100),
+              defaultRenderer: charts.LineRendererConfig(includePoints: true, includeArea: true),
+              domainAxis: charts.NumericAxisSpec(
+              tickProviderSpec:
+              charts.BasicNumericTickProviderSpec(desiredTickCount: 3),
+              tickFormatterSpec: customTickFormatter,
+            ),
+            ),
+          );
+        }
+
+        return Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[CircularProgressIndicator()],
+            )
+          ],
+        );
+      },
+    );
+  }
+
   Widget _botonRegresar() {
 
     return Container(
-      margin: EdgeInsets.only(top: 60.0),
+      margin: EdgeInsets.only(top: 50.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -174,41 +232,50 @@ class _BiPageState extends State<BiPage> {
                 ),
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width / 1.15,
-              padding: EdgeInsets.all(30.0),
-              margin: EdgeInsets.symmetric(vertical: 20.0),
-              decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                BoxShadow(
-                    color: Color.fromRGBO(185, 194, 194, 0.8),
-                    blurRadius: 20.0,
-                    offset: Offset(0, 10.0))
-              ]),
-              child: Column(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        'Ubicación según enfermedad',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 15.0, fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                      Text(
-                        'Ubicaciones en donde afectan más cierta enfermedad',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w300,
-                          color: Color.fromRGBO(63, 66, 66, 0.8),
+            InkWell(
+              onTap: (){
+                setState(() {
+                  vistaInicial = false;
+                  vistaEnfermedades = false;
+                  vistaUbicacion = true;
+                });
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width / 1.15,
+                padding: EdgeInsets.all(30.0),
+                margin: EdgeInsets.symmetric(vertical: 20.0),
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                      color: Color.fromRGBO(185, 194, 194, 0.8),
+                      blurRadius: 20.0,
+                      offset: Offset(0, 10.0))
+                ]),
+                child: Column(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          'Ubicación según enfermedad',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 15.0, fontWeight: FontWeight.w500),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        Text(
+                          'Ubicaciones en donde afectan más cierta enfermedad',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w300,
+                            color: Color.fromRGBO(63, 66, 66, 0.8),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(
@@ -255,9 +322,10 @@ class _BiPageState extends State<BiPage> {
   }
 
   _setData(var snapShot) {
+    
     double xatoma = double.parse(snapShot['xatoma_eruptivo'].toString());
     double pitiriasis =
-        double.parse(snapShot['pitiriasis_versicolor'].toString());
+    double.parse(snapShot['pitiriasis_versicolor'].toString());
     double tinea = double.parse(snapShot['tinea_nigra'].toString());
     double sweet = double.parse(snapShot['sindrome_de_sweet'].toString());
     double urticaria = double.parse(snapShot['urticaria'].toString());
@@ -280,6 +348,28 @@ class _BiPageState extends State<BiPage> {
         id: 'Daily task',
         labelAccessorFn: (Enfermedad row, _) => '${row.valor}'));
   }
+
+  _setDataPoint(var snapShot) {
+
+    int zona1 = int.parse(snapShot['Zona 1'].toString());
+    int zona2 = int.parse(snapShot['Zona 2'].toString());
+    int zona5 = int.parse(snapShot['Zona 5'].toString());
+
+    var lineData = [
+      Ubicacion(0, zona1),
+      Ubicacion(1, zona2),
+      Ubicacion(2, zona5),
+    ];
+
+    _seriesPointData.add(charts.Series(
+        data: lineData,
+        domainFn: (Ubicacion task, _) => task.correlativo,
+        measureFn: (Ubicacion task, _) => task.valor,
+       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        id: 'Daily task',
+      )
+    );
+  }
 }
 
 class Enfermedad {
@@ -288,4 +378,11 @@ class Enfermedad {
   Color color;
 
   Enfermedad(this.nombre, this.valor, this.color);
+}
+
+class Ubicacion {
+  int correlativo;
+  int valor;
+
+  Ubicacion(this.correlativo, this.valor);
 }
