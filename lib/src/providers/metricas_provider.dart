@@ -45,4 +45,24 @@ class MetricasProvider{
 
   }
 
+  //METRICA RENDIMIENTO
+  Future<dynamic> obtenerMetricaRendimiento() async{
+
+    final url = '$urlApi/generarMetricaRendimiento';
+
+    final resp = await http.get(url, headers: {
+       HttpHeaders.contentTypeHeader: "application/json"
+    });
+
+    if(resp.statusCode !=200){
+      print('Error al generar metrica de rendimiento');
+      return null;
+    }
+
+    final formatData = json.decode(resp.body);
+
+    return formatData;
+
+  }
+
 }

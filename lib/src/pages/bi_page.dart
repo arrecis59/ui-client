@@ -14,17 +14,20 @@ class _BiPageState extends State<BiPage> {
 
   List<charts.Series<Enfermedad, String>> _seriesPieData;
   List<charts.Series<Ubicacion, int>> _seriesPointData;
+  List<charts.Series<Rendimiento, int>> _seriesScatterData;
   MetricasProvider metricProv = MetricasProvider();
 
   bool vistaInicial = true;
   bool vistaEnfermedades = false;
   bool vistaUbicacion = false;
+  bool vistaRendimiento = false;
 
   @override
   Widget build(BuildContext context) {
 
     _seriesPieData = List<charts.Series<Enfermedad, String>>();
     _seriesPointData = List<charts.Series<Ubicacion, int>>();
+   _seriesScatterData = List<charts.Series<Rendimiento, int>>();
 
     return Stack(
       children: <Widget>[
@@ -43,6 +46,8 @@ class _BiPageState extends State<BiPage> {
       vista = _pieChart();
     }else if (vistaUbicacion) {
       vista = _pointChart();
+    }else if (vistaRendimiento) {
+      vista = _scatterChart();
     }
 
     return vista;
@@ -129,6 +134,48 @@ class _BiPageState extends State<BiPage> {
               charts.BasicNumericTickProviderSpec(desiredTickCount: 3),
               tickFormatterSpec: customTickFormatter,
             ),
+            ),
+          );
+        }
+
+        return Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[CircularProgressIndicator()],
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _scatterChart() {
+
+
+    return FutureBuilder(
+      future: metricProv.obtenerMetricaRendimiento(),
+      builder: (BuildContext context, snapShot) {
+        if (snapShot.hasData) {
+
+          _setDataScatter(snapShot.data);
+          return Container(
+            padding: EdgeInsets.only(top: 130.0, bottom: 20.0, left: 10.0, right: 10.0),
+            child: charts.ScatterPlotChart(
+              _seriesScatterData,
+              animate: true,
+              animationDuration: Duration(milliseconds: 1100),
+              defaultRenderer: charts.PointRendererConfig(),
+              customSeriesRenderers: [
+                charts.LineRendererConfig( 
+                  customRendererId: 'customeLine',
+                  layoutPaintOrder: charts.LayoutViewPaintOrder.point + 1
+                )
+              ],
+             
             ),
           );
         }
@@ -278,41 +325,51 @@ class _BiPageState extends State<BiPage> {
                 ),
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width / 1.15,
-              padding: EdgeInsets.all(30.0),
-              margin: EdgeInsets.symmetric(vertical: 20.0),
-              decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                BoxShadow(
-                    color: Color.fromRGBO(185, 194, 194, 0.56),
-                    blurRadius: 20.0,
-                    offset: Offset(0, 10.0))
-              ]),
-              child: Column(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        'Rendimiento de la detección',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 15.0, fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                      Text(
-                        'Redimiento del algoritmo al detectar una efermedad',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w300,
-                          color: Color.fromRGBO(63, 66, 66, 0.6),
+            InkWell(
+              onTap: (){
+                setState(() {
+                  vistaInicial = false;
+                  vistaEnfermedades = false;
+                  vistaUbicacion = false;
+                  vistaRendimiento = true;
+                });
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width / 1.15,
+                padding: EdgeInsets.all(30.0),
+                margin: EdgeInsets.symmetric(vertical: 20.0),
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                      color: Color.fromRGBO(185, 194, 194, 0.56),
+                      blurRadius: 20.0,
+                      offset: Offset(0, 10.0))
+                ]),
+                child: Column(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          'Rendimiento de la detección',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 15.0, fontWeight: FontWeight.w500),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        Text(
+                          'Redimiento del algoritmo al detectar una efermedad',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w300,
+                            color: Color.fromRGBO(63, 66, 66, 0.6),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -370,6 +427,44 @@ class _BiPageState extends State<BiPage> {
       )
     );
   }
+
+  
+  _setDataScatter(var snapShot) {
+
+    var scatterData = [
+      new Rendimiento(0, 0, 3.0),
+      new Rendimiento(1, 0, 3.0),
+      new Rendimiento(2, 0, 3.0),
+      new Rendimiento(3, 0, 3.0),
+      new Rendimiento(4, 0, 3.0),
+      new Rendimiento(5, 0, 3.0),
+      new Rendimiento(6, 0, 3.0),
+      new Rendimiento(7, 0, 3.0),
+      new Rendimiento(8, 0, 3.0),
+      new Rendimiento(9, 0, 3.0),
+      new Rendimiento(10, 0, 3.0),
+      new Rendimiento(11, 0.894, 3.0),
+      new Rendimiento(11, 1.296, 3.0),
+      new Rendimiento(11, 1.916, 3.0),
+      new Rendimiento(12, 0, 3.0),
+      
+    ];
+
+    _seriesScatterData.add(charts.Series(
+
+        data: scatterData,
+        colorFn: (Rendimiento sales, _) {
+          // Bucket the measure column value into 3 distinct colors.
+          return charts.MaterialPalette.blue.shadeDefault;
+        },
+       domainFn: (Rendimiento sales, _) => sales.mes,
+       measureFn: (Rendimiento sales, _) => sales.valor,
+      // Providing a radius function is optional.
+       radiusPxFn: (Rendimiento sales, _) => sales.radio,
+      id: 'Daily task',
+      )..setAttribute(charts.rendererIdKey, "customeLine")
+    );
+  }
 }
 
 class Enfermedad {
@@ -385,4 +480,12 @@ class Ubicacion {
   int valor;
 
   Ubicacion(this.correlativo, this.valor);
+}
+
+class Rendimiento {
+  int mes;
+  double valor;
+  double radio;
+
+  Rendimiento(this.mes, this.valor, this.radio);
 }
