@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:ui_client/src/providers/metricas_provider.dart';
@@ -174,7 +172,7 @@ class _BiPageState extends State<BiPage> {
               customSeriesRenderers: [
                 charts.LineRendererConfig( 
                   customRendererId: 'customeLine',
-                  layoutPaintOrder: charts.LayoutViewPaintOrder.point + 1 ;
+                  layoutPaintOrder: charts.LayoutViewPaintOrder.point + 1
                 )
               ],
              
