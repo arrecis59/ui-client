@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   )
                 ),
-                child: TextField( 
+                child: TextFormField( 
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration( 
@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Container( 
                 padding: EdgeInsets.only(top: 10.0, left: 8.0, right: 8.0),
-                child: TextField( 
+                child: TextFormField( 
                   controller: passwordController,
                   keyboardType: TextInputType.emailAddress,
                   obscureText: _isHidden ? false : true,
@@ -159,9 +159,20 @@ class _LoginPageState extends State<LoginPage> {
 
    void _iniciarSesion() async {
 
-    if(emailController.text !='' && emailController.text !=''){
+     Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    
+    RegExp regex = new RegExp(pattern);
 
-      _setLoading(true);
+    if (!regex.hasMatch(emailController.text)){
+      mostrarAlerta(context, 'correo invalido', 'error');
+    } else if(emailController.text == ''){
+      mostrarAlerta(context, 'el campo correo es requerido', 'error');
+    } else if(passwordController.text == ''){
+       mostrarAlerta(context, 'el campo contraseña es requerido', 'error');
+    } else if(emailController.text !='' && emailController.text !=''){
+
+        _setLoading(true);
 
       Map info = await authProvider.ingresar(emailController.text, passwordController.text);
 
@@ -175,8 +186,6 @@ class _LoginPageState extends State<LoginPage> {
         mostrarAlerta(context, info['message'], 'error');
       }
 
-    }else{
-      mostrarAlerta(context,'Ingrese correo y contraseña', 'error');
     }
   }
 

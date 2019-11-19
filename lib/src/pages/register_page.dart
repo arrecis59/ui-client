@@ -194,8 +194,19 @@ class _RegisterPageState extends State<RegisterPage> {
 
 
   void _crearCuenta() async{
+
+       Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     
-    if( emailController.text !='' && passwordController.text !='' ){
+    RegExp regex = new RegExp(pattern);
+
+      if (!regex.hasMatch(emailController.text)){
+      mostrarAlerta(context, 'correo invalido', 'error');
+    } else if(emailController.text == ''){
+      mostrarAlerta(context, 'el campo correo es requerido', 'error');
+    } else if(passwordController.text == ''){
+       mostrarAlerta(context, 'el campo contraseña es requerido', 'error');
+    } else if( emailController.text !='' && passwordController.text !='' ){
 
       _setLoading(true);
 
@@ -210,8 +221,6 @@ class _RegisterPageState extends State<RegisterPage> {
         _setLoading(false);
         mostrarAlerta(context, info['message'], 'error');
       }
-    }else{
-       mostrarAlerta(context, 'Ingrese correo y contraseña', 'error');
     }
  
   }
