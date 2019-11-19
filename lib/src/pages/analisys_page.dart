@@ -728,6 +728,8 @@ class _AnalisysPageState extends State<AnalisysPage> {
   //ENVIAR SINTOMAS
   _enviarSintomas() async{
 
+    print('entro a sintomas');
+
       _setStep1(false);
       _setStep2(false);
 
@@ -799,7 +801,14 @@ class _AnalisysPageState extends State<AnalisysPage> {
         enfermedad = respEnfermedad['enfermedad'];
         tiempoEjecucion = respEnfermedad['time'];
 
-        if(respEnfermedad != null){
+        if(enfermedad.length == 0){
+          _setLoading(false);
+          mostrarAlerta(context, 'Error al detectar enfermedad', 'Error');
+         _regresarMenuAnalisis();
+
+        }else{
+
+          if( (respEnfermedad != null)){
           //set variables de control
           _setLoading(false);
 
@@ -811,6 +820,10 @@ class _AnalisysPageState extends State<AnalisysPage> {
           mostrarAlerta(context, 'Error al detectar enfermedad', 'Error');
           setState(() {});
         }
+
+        }
+
+        
 
 
       }else{
